@@ -6,27 +6,7 @@ and the [Flink kuberntes operator](https://nightlies.apache.org/flink/flink-kube
 and then deploy a simple job, developed in java.
 
 
-## Prerequisites
-
-* KinD: https://kind.sigs.k8s.io/docs/user/quick-start/
-* Kubectl: https://kubernetes.io/docs/tasks/tools/
-* Helm: https://helm.sh/
-
-Install on MacOS X
-
-```shell
-brew install kind
-brew install kubectl
-brew install helm
-
-# Validate kind
-kind version
-
-# Validate kubectl
-kubectl version
-```
-
-To create the Kubernetes cluster follow the following [instructions](doc/00_MACOS-DOCKER-KIND.md)
+To create the Kubernetes cluster follow the following [instructions](doc/00_SETUP_LOCAL_ENVIRONMENT.md)
 
 ## Install Flink
 
@@ -51,5 +31,7 @@ kubectl create -f https://raw.githubusercontent.com/apache/flink-kubernetes-oper
 kubectl logs -f deploy/basic-example
 
 kubectl port-forward svc/basic-example-rest 8081
+
+kubectl delete -f https://raw.githubusercontent.com/apache/flink-kubernetes-operator/release-1.5/examples/basic.yaml
 
 ```
