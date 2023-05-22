@@ -107,3 +107,44 @@ spec:
       runAsNonRoot: true
 EOF
 ```
+
+Create topics:
+```shell
+
+kubectl -n confluent exec --stdin --tty kafka-0 -- /bin/bash
+
+
+kubectl -n confluent exec kafka-0 -- \
+kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic words_in \
+--create --partitions 1 \
+--replication-factor 1 \
+--config cleanup.policy=delete
+
+
+kubectl -n confluent exec kafka-0 -- \
+kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic wordcount \
+--create --partitions 1 \
+--replication-factor 1 \
+--config cleanup.policy=compact
+
+
+kubectl -n confluent exec --tty --stdin kafka-0 -- \
+kafka-console-producer \
+--bootstrap-server localhost:9092 \
+--topic words_in
+
+kubectl -n confluent exec kafka-0 -- \
+kafka-console-consumer \
+--bootstrap-server localhost:9092 \
+--topic words_in
+
+kubectl -n confluent exec kafka-0 -- \
+kafka-console-consumer \
+--bootstrap-server localhost:9092 \
+--topic wordcount
+                        
+```
