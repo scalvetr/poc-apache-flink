@@ -47,6 +47,7 @@ metadata:
 data:
   kafka.properties: |
     bootstrap.servers=kafka.confluent:9092
+  job.properties: |
     input.topic=words_in
     output.topic=wordcount
     group_id=wordcount

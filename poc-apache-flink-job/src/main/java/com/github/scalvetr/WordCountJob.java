@@ -27,6 +27,8 @@ import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,14 +47,23 @@ import java.util.Properties;
  * method, change the respective entry in the POM.xml file (simply search for 'mainClass').
  */
 public class WordCountJob {
+    private static final Logger LOG = LoggerFactory.getLogger(WordCountJob.class);
 
     public static void main(String[] args) throws Exception {
-        Properties config = new Properties();
-        config.load(new FileInputStream(new File("/opt/flink/usrconfig/kafka.properties")));
-        String brokers = config.getProperty("bootstrap.servers");
-        String inputTopic = config.getProperty("input.topic");
-        String outputTopic = config.getProperty("output.topic");
-        String group = config.getProperty("group_id");
+        LOG.info("WordCountJob");
+        Properties kafkaProperties = new Properties();
+        kafkaProperties.load(new FileInputStream(new File("/opt/flink/usrconfig/kafka.properties")));
+        String brokers = kafkaProperties.getProperty("bootstrap.servers");
+        Properties jobProperties = new Properties();
+        jobProperties.load(new FileInputStream(new File("/opt/flink/usrconfig/job.properties")));
+        String inputTopic = jobProperties.getProperty("input.topic");
+        String outputTopic = jobProperties.getProperty("output.topic");
+        String group = jobProperties.getProperty("group_id");
+
+        LOG.info("config -> brokers={}", brokers);
+        LOG.info("config -> inputTopic={}", inputTopic);
+        LOG.info("config -> outputTopic={}", outputTopic);
+        LOG.info("config -> group={}", group);
 
         final KafkaUtils kafkaUtils = new KafkaUtils(brokers);
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
