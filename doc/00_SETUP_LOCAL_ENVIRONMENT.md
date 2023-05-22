@@ -22,13 +22,32 @@ kubectl version
 
 ## Setup Kubernetes Cluster
 
-https://istio.io/latest/docs/setup/platform-setup/kind/
+* https://istio.io/latest/docs/setup/platform-setup/kind/
+* https://kind.sigs.k8s.io/docs/user/local-registry/
+
+set up the local registry
+```shell
+reg_name='kind-registry'
+reg_port='5001'
+if [ "$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)" != 'true' ]; then
+  docker run \
+    -d --restart=always -p "127.0.0.1:${reg_port}:5000" --name "${reg_name}" \
+    registry:2
+fi
+
+```
 
 ```shell
 # install ...
 cat <<EOF | kind create cluster --name poc-apache-flink --wait 5m --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry]
+    config_path = ""
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${reg_port}"]
+    endpoint = ["http://${reg_name}:5000"]
 nodes:
 - role: control-plane
   extraPortMappings:
@@ -43,6 +62,24 @@ nodes:
 EOF
 # ... or just start
 docker start poc-apache-flink-control-plane
+
+# connect the registry to the cluster network if not already connected
+if [ "$(docker inspect -f='{{json .NetworkSettings.Networks.kind}}' "${reg_name}")" = 'null' ]; then
+  docker network connect "kind" "${reg_name}"
+fi
+# Document the local registry
+# https://github.com/kubernetes/enhancements/tree/master/keps/sig-cluster-lifecycle/generic/1755-communicating-a-local-registry
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-registry-hosting
+  namespace: kube-public
+data:
+  localRegistryHosting.v1: |
+    host: "localhost:${reg_port}"
+    help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
+EOF
 
 # check connectivity
 kubectl cluster-info --context kind-poc-apache-flink
