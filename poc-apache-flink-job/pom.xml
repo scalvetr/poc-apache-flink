@@ -30,13 +30,12 @@ under the License.
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <flink.version>1.9.0</flink.version>
+        <flink.version>1.17.0</flink.version>
         <java.version>1.8</java.version>
-        <scala.binary.version>2.11</scala.binary.version>
+        <!--scala.binary.version>2.11</scala.binary.version-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <flink-connector-kafka.version>1.17.0</flink-connector-kafka.version>
     </properties>
 
     <repositories>
@@ -62,13 +61,14 @@ under the License.
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-
+-->
         <!-- Add connector dependencies here. They must be in the default scope (compile). -->
 
         <!-- Example:
@@ -79,11 +79,16 @@ under the License.
             <version>${flink.version}</version>
         </dependency>
 -->
-
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java</artifactId>
+            <version>${flink.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
-            <version>${flink-connector-kafka.version}</version>
+            <version>${flink.version}</version>
         </dependency>
 
 
@@ -230,12 +235,14 @@ under the License.
                     <version>${flink.version}</version>
                     <scope>compile</scope>
                 </dependency>
+                <!--
                 <dependency>
                     <groupId>org.apache.flink</groupId>
                     <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
                     <version>${flink.version}</version>
                     <scope>compile</scope>
                 </dependency>
+                -->
             </dependencies>
         </profile>
     </profiles>

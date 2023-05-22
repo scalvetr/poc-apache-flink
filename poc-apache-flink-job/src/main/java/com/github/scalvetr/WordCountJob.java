@@ -18,11 +18,12 @@
 
 package com.github.scalvetr;
 
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
-import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
@@ -42,19 +43,21 @@ import org.apache.flink.util.Collector;
 public class WordCountJob {
 
     public static void main(String[] args) throws Exception {
+        String brokers = "kafka.confluent";
+        String inputTopic = "in";
+        String outputTopic = "out";
+        String group = "wordcount";
+
+        final KafkaUtils kafkaUtils = new KafkaUtils(brokers);
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         // setup source kafka
-        final DataStream<String> text = null;
+        final KafkaSource<String> source = kafkaUtils.buildKafkaSource(String.class,
+                new SimpleStringSchema(), inputTopic, group);
+        final KafkaSink<Tuple2<String, Integer>> sink = kafkaUtils.buildKafkaSink(String.class, Integer.class,
+                new SimpleStringSchema(),
+                new IntSerializationScheme(), outputTopic);
 
-        KafkaSource<String> source = KafkaSource.<String>builder()
-                .setBootstrapServers(brokers)
-                .setTopics("input-topic")
-                .setGroupId("my-group")
-                .setStartingOffsets(OffsetsInitializer.earliest())
-                .setValueOnlyDeserializer(new SimpleStringSchema())
-                .build();
-
-        env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source");
+        final DataStream<String> text = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source");
 
 
         int windowSize = 250;
@@ -79,8 +82,10 @@ public class WordCountJob {
                         // each time it sees a new instance of each word in the stream.
                         .sum(1)
                         .name("counter");
+
+        counts.sinkTo(sink);
         // execute program
-        env.execute("Flink Streaming Java API Skeleton");
+        env.execute("Word Count");
     }
 
     public static final class Tokenizer
