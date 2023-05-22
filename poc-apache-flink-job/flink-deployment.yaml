@@ -3,11 +3,29 @@ kind: FlinkDeployment
 metadata:
   name: poc-apache-flink-job
 spec:
-  image: kind-registry:5000/poc-apache-flink-job:latest
+  image: localhost:5001/poc-apache-flink-job:latest
+  imagePullPolicy: Always
   flinkVersion: v1_17
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "2"
   serviceAccount: flink
+  podTemplate:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: poc-apache-flink-job
+    spec:
+      containers:
+        # Do not change the main container name
+        - name: flink-main-container
+          volumeMounts:
+            - mountPath: /opt/flink/usrconfig
+              name: flink-usrconfig
+        # Sample sidecar container
+      volumes:
+        - name: flink-usrconfig
+          configMap:
+            name: poc-apache-flink-job-config
   jobManager:
     resource:
       memory: "2048m"
@@ -20,3 +38,15 @@ spec:
     jarURI: local:///opt/flink/usrlib/poc-apache-flink-job.jar
     parallelism: 2
     upgradeMode: stateless
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: poc-apache-flink-job-config
+  namespace: default
+data:
+  kafka.properties: |
+    bootstrap.servers=kafka.confluent:9092
+    input.topic=words_in
+    output.topic=wordcount
+    group_id=wordcount

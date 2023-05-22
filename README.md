@@ -45,6 +45,9 @@ DOCKER_BUILDKIT=1 docker build . -t poc-apache-flink-job:latest
 docker tag poc-apache-flink-job:latest localhost:5001/poc-apache-flink-job:latest
 docker push localhost:5001/poc-apache-flink-job:latest
 
+# check the image is deployed
+curl -X GET http://localhost:5001/v2/_catalog
+
 # Create FlinkDeployment Yaml and Submit
 kubectl apply -f flink-deployment.yaml
 kubectl logs -f deploy/poc-apache-flink-job

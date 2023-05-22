@@ -28,6 +28,10 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
+
 /**
  * Skeleton for a Flink Streaming Job.
  *
@@ -43,10 +47,12 @@ import org.apache.flink.util.Collector;
 public class WordCountJob {
 
     public static void main(String[] args) throws Exception {
-        String brokers = "kafka.confluent";
-        String inputTopic = "in";
-        String outputTopic = "out";
-        String group = "wordcount";
+        Properties config = new Properties();
+        config.load(new FileInputStream(new File("/opt/flink/usrconfig/kafka.properties")));
+        String brokers = config.getProperty("bootstrap.servers");
+        String inputTopic = config.getProperty("input.topic");
+        String outputTopic = config.getProperty("output.topic");
+        String group = config.getProperty("group_id");
 
         final KafkaUtils kafkaUtils = new KafkaUtils(brokers);
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
