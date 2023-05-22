@@ -43,6 +43,7 @@ cd poc-apache-flink-job
 DOCKER_BUILDKIT=1 docker build . -t poc-apache-flink-job:latest
 
 docker tag poc-apache-flink-job:latest localhost:5001/poc-apache-flink-job:latest
+docker push localhost:5001/poc-apache-flink-job:latest
 
 # Create FlinkDeployment Yaml and Submit
 kubectl apply -f flink-deployment.yaml
