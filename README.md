@@ -21,17 +21,23 @@ kubectl get pods
 helm list
 ```
 
-Deploy a sample job
+Deploy a sample job to test the Flink installation
 
 ```shell
+# Deploy  the job
 kubectl create -f https://raw.githubusercontent.com/apache/flink-kubernetes-operator/release-1.5/examples/basic.yaml
+# check the logs
 kubectl logs -f deploy/basic-example
+# forward the ui port to the host machine
 kubectl port-forward svc/basic-example-rest 8081
+# check the UI http://localhost:8081
+
+# delete the job
 kubectl delete -f https://raw.githubusercontent.com/apache/flink-kubernetes-operator/release-1.5/examples/basic.yaml
 ```
 
 
-Deploy a local job
+Deploy a local poc-apache-flink-job
 
 ```shell
 cd poc-apache-flink-job
@@ -50,7 +56,12 @@ curl -X GET http://localhost:5001/v2/_catalog
 
 # Create FlinkDeployment Yaml and Submit
 kubectl apply -f flink-deployment.yaml
+# check the logs
 kubectl logs -f deploy/poc-apache-flink-job
-kubectl port-forward svc/kubectl logs -f deploy/poc-apache-flink-job-rest 8081
+# forward the ui port to the host machine
+kubectl port-forward svc/poc-apache-flink-job-rest 8081
+# check the UI http://localhost:8081
+
+# delete the job
 kubectl delete -f flink-deployment.yaml
 ```
