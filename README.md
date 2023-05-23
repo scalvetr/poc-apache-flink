@@ -61,7 +61,25 @@ kubectl logs -f deploy/poc-apache-flink-job
 # forward the ui port to the host machine
 kubectl port-forward svc/poc-apache-flink-job-rest 8081
 # check the UI http://localhost:8081
+```
 
+Produce & consume
+```shell
+# produce words_in
+kubectl -n confluent exec --tty --stdin kafka-0 -- \
+kafka-console-producer \
+--bootstrap-server localhost:9092 \
+--topic words_in
+
+# consume wordcount
+kubectl -n confluent exec kafka-0 -- \
+kafka-console-consumer \
+--property print.key=true --property key.separator="= " \
+--bootstrap-server localhost:9092 \
+--topic wordcount
+```
+
+```shell
 # delete the job
 kubectl delete -f flink-deployment.yaml
 ```
