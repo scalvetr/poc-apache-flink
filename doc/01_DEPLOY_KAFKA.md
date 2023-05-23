@@ -11,7 +11,7 @@ helm upgrade --install confluent-operator --namespace confluent confluentinc/con
 ```
 
 ## Deploy kafka cluster
-
+https://docs.confluent.io/operator/current/co-api.html
 See: https://github.com/confluentinc/confluent-kubernetes-examples/blob/master/quickstart-deploy/confluent-platform-singlenode.yaml
 
 Zookeeper
@@ -108,12 +108,9 @@ spec:
 EOF
 ```
 
-Create topics:
+Create Kafka topics:
 ```shell
-
-kubectl -n confluent exec --stdin --tty kafka-0 -- /bin/bash
-
-
+# create words_in
 kubectl -n confluent exec kafka-0 -- \
 kafka-topics \
 --bootstrap-server localhost:9092 \
@@ -122,7 +119,7 @@ kafka-topics \
 --replication-factor 1 \
 --config cleanup.policy=delete
 
-
+# create wordcount
 kubectl -n confluent exec kafka-0 -- \
 kafka-topics \
 --bootstrap-server localhost:9092 \
@@ -130,21 +127,30 @@ kafka-topics \
 --create --partitions 1 \
 --replication-factor 1 \
 --config cleanup.policy=compact
+```
 
+Produce & consume
+```shell
+kubectl -n confluent exec --stdin --tty kafka-0 -- /bin/bash
 
+kubectl -n default exec --stdin --tty poc-apache-flink-job-866559b867-m7gsn -- /bin/bash
+
+# produce words_in
 kubectl -n confluent exec --tty --stdin kafka-0 -- \
 kafka-console-producer \
 --bootstrap-server localhost:9092 \
 --topic words_in
 
+# consume words_in
 kubectl -n confluent exec kafka-0 -- \
 kafka-console-consumer \
 --bootstrap-server localhost:9092 \
 --topic words_in
 
+# consume wordcount
 kubectl -n confluent exec kafka-0 -- \
 kafka-console-consumer \
+--property print.key=true --property key.separator="= " \
 --bootstrap-server localhost:9092 \
 --topic wordcount
-                        
 ```

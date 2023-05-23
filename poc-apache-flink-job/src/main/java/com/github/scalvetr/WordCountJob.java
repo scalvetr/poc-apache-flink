@@ -26,6 +26,8 @@ import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +94,8 @@ public class WordCountJob {
                         // This is similar to a GROUP BY clause in a SQL query.
                         .keyBy(value -> value.f0)
                         // create windows of windowSize records slided every slideSize records
-                        .countWindow(windowSize, slideSize)
+                        //.countWindow(windowSize, slideSize)
+                        .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
                         // For each key, we perform a simple sum of the "1" field, the count.
                         // If the input data set is bounded, sum will output a final count for
                         // each word. If it is unbounded, it will continuously output updates
