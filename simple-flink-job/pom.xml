@@ -21,11 +21,11 @@ under the License.
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.scalvetr</groupId>
-    <artifactId>poc-apache-flink-job</artifactId>
+    <artifactId>simple-flink-job</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Flink Quickstart Job</name>
+    <name>Simple Flink Job</name>
     <url>http://www.myorganization.org</url>
 
     <properties>

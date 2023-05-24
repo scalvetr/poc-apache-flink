@@ -1,4 +1,4 @@
 /poc-apache-flink.iml
 /.idea/
-/poc-apache-flink-job/poc-apache-flink-job.iml
-/poc-apache-flink-job/target/
+/simple-flink-job/simple-flink-job.iml
+/simple-flink-job/target/
