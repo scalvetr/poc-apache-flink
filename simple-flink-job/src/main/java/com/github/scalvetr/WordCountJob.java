@@ -78,10 +78,6 @@ public class WordCountJob {
 
         final DataStream<String> text = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source");
 
-
-        int windowSize = 250;
-        int slideSize = 150;
-
         DataStream<Tuple2<String, Integer>> counts =
                 // The text lines read from the source are split into words
                 // using a user-defined function. The tokenizer, implemented below,

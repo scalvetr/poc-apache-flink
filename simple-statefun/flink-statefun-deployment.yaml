@@ -14,7 +14,7 @@ spec:
     jobmanager.rpc.port: 6123
     taskmanager.rpc.port: 6122
     classloader.parent-first-patterns.additional: org.apache.flink.statefun;org.apache.kafka;com.google.protobuf
-    state.checkpoints.dir: s3://my-checkpoint-bucket
+ #   state.checkpoints.dir: s3://my-checkpoint-bucket
     state.backend: rocksdb
     state.backend.rocksdb.timer-service.factory: ROCKSDB
     state.backend.incremental: true
@@ -56,16 +56,3 @@ spec:
     jarURI: local:///opt/flink/usrlib/poc-apache-flink-job.jar
     parallelism: 2
     upgradeMode: stateless
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: poc-apache-flink-job-config
-  namespace: default
-data:
-  kafka.properties: |
-    bootstrap.servers=kafka.confluent:9092
-  job.properties: |
-    input.topic=words_in
-    output.topic=wordcount
-    group_id=wordcount
