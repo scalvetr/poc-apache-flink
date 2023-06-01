@@ -32,28 +32,28 @@ public class Messages {
   /* ingress -> user-shopping-cart */
   public static final Type<AddToCart> ADD_TO_CART =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameFromString("com.example/AddToCart"),
+          TypeName.typeNameFromString("shopping-cart/AddToCart"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, AddToCart.class));
 
   /* ingress -> user-shopping-cart */
   public static final Type<ClearCart> CLEAR_CART_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameFromString("com.example/ClearCart"),
+          TypeName.typeNameFromString("shopping-cart/ClearCart"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, ClearCart.class));
 
   /* ingress -> user-shopping-cart */
   public static final Type<Checkout> CHECKOUT_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameFromString("com.example/Checkout"),
+          TypeName.typeNameFromString("shopping-cart/Checkout"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, Checkout.class));
 
   /* user-shopping-cart -> egress */
   public static final Type<Receipt> RECEIPT_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameFromString("com.example/Receipt"),
+          TypeName.typeNameFromString("shopping-cart/Receipt"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, Receipt.class));
 
@@ -61,7 +61,7 @@ public class Messages {
   /* user-shopping-cart -> stock */
   public static final Type<RestockItem> RESTOCK_ITEM_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameFromString("com.example/RestockItem"),
+          TypeName.typeNameFromString("shopping-cart/RestockItem"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, RestockItem.class));
 
@@ -206,20 +206,20 @@ public class Messages {
   /* user-shopping-cart -> stock */
   public static final Type<RequestItem> REQUEST_ITEM_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameFromString("com.example/RequestItem"),
+          TypeName.typeNameFromString("shopping-cart/RequestItem"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, RequestItem.class));
 
   /* stock -> user-shopping-cart */
   public static final Type<ItemAvailability> ITEM_AVAILABILITY_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameFromString("com.example/ItemAvailability"),
+          TypeName.typeNameFromString("shopping-cart/ItemAvailability"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, ItemAvailability.class));
 
   public static final Type<EgressRecord> EGRESS_RECORD_JSON_TYPE =
       SimpleType.simpleImmutableTypeFrom(
-          TypeName.typeNameOf("io.statefun-shoping-cart.playground", "EgressRecord"),
+          TypeName.typeNameOf("io.statefun-shopping-cart.playground", "EgressRecord"),
           mapper::writeValueAsBytes,
           bytes -> mapper.readValue(bytes, EgressRecord.class));
 

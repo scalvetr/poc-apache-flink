@@ -24,6 +24,6 @@ final class Identifiers {
   private Identifiers() {}
 
   static final TypeName RECEIPT_EGRESS =
-      TypeName.typeNameFromString("io.statefun-shoping-cart.playground/egress");
+      TypeName.typeNameFromString("io.statefun-shopping-cart.playground/egress");
   static final String RECEIPT_TOPICS = "receipts";
 }

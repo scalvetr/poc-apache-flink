@@ -12,20 +12,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.master.name }}
+
+kind: io.statefun-shopping-cart.endpoints.v2/http
 spec:
-  type: ClusterIP
-  ports:
-    - name: rpc
-      port: 6123
-    - name: blob
-      port: 6124
-    - name: ui
-      port: 8081
-  selector:
-    app: statefun
-    component: master
+  functions: shopping-cart/*
+  urlPathTemplate: http://shopping-cart-functions:8080/
+  transport:
+    type: io.statefun-shopping-cart.transports.v1/async
+---
+kind: io.statefun-shopping-cart.playground.v1/ingress
+spec:
+  port: 8090
+---
+kind: io.statefun-shopping-cart.playground.v1/egress
+spec:
+  port: 8091
+  topics:
+    - receipts

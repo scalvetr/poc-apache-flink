@@ -54,7 +54,7 @@ public class Expose {
     /* This example uses the Undertow http server, but any HTTP server/framework will work as-well */
     Undertow server =
         Undertow.builder()
-            .addHttpListener(1108, "0.0.0.0")
+            .addHttpListener(8080, "0.0.0.0")
             .setHandler(new UndertowStateFunHandler(handler))
             .setServerOption(ENABLE_HTTP2, true)
             .build();

@@ -12,30 +12,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-checkpoint:
-  dir: file:///checkpoint-dir
-  mode: EXACTLY_ONCE
-  interval: 10sec
+# Build the functions code ...
+FROM maven:3.6.3-jdk-11 AS builder
+COPY pom.xml /usr/src/app/
+# Build dependencies and cache this layer
+RUN mvn -f /usr/src/app dependency:go-offline package -B
+COPY src /usr/src/app/src
+RUN mvn -f /usr/src/app/pom.xml clean package
 
-ha:
-  id: statefun-shoping-cart-application
-  dir: file:///ha-ir
-
-master:
-  name: statefun-shoping-cart-master
-  image: localhost:5001/statefun-shoping-cart:latest # replace with your image
-  jvm_mem: 1g
-  container_mem: 1.5Gi
-
-worker:
-  name: statefun-shoping-cart-worker
-  image: localhost:5001/statefun-shoping-cart:latest # replace with your image
-  jvm_mem: 1g
-  container_mem: 1.5Gi
-  replicas: 1
-
-ingress:
-  url: "statefun-shoping-cart.default.localtest.me"
-  className: "nginx"
+# ... and run the web server!
+FROM openjdk:8
+WORKDIR /
+COPY --from=builder /usr/src/app/target/shopping-cart*jar-with-dependencies.jar shopping-cart.jar
+EXPOSE 8080
+CMD java -jar shopping-cart.jar

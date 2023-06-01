@@ -12,20 +12,35 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-kind: io.statefun-shoping-cart.endpoints.v2/http
-spec:
-  functions: com.example/*
-  urlPathTemplate: http://shopping-cart-functions:1108/
-  transport:
-    type: io.statefun-shoping-cart.transports.v1/async
----
-kind: io.statefun-shoping-cart.playground.v1/ingress
-spec:
-  port: 8090
----
-kind: io.statefun-shoping-cart.playground.v1/egress
-spec:
-  port: 8091
+checkpoint:
+  dir: file:///checkpoint-dir
+  mode: EXACTLY_ONCE
+  interval: 10sec
+
+ha:
+  id: statefun-shopping-cart-application
+  dir: file:///ha-ir
+
+master:
+  name: statefun-shopping-cart-master
+  image: localhost:5001/statefun-shopping-cart:latest # replace with your image
+  jvm_mem: 1g
+  container_mem: 1.5Gi
+
+worker:
+  name: statefun-shopping-cart-worker
+  image: localhost:5001/statefun-shopping-cart:latest # replace with your image
+  jvm_mem: 1g
+  container_mem: 1.5Gi
+  replicas: 1
+
+ingress:
+  url: "statefun-shopping-cart.default.localtest.me"
+  className: "nginx"
+
+kafka:
+  broker: kafka.confluent:9092
   topics:
-    - receipts
+    message:

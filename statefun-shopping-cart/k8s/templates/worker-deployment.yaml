@@ -17,6 +17,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.worker.name }}
+  labels:
+    app: {{ include "deployment.fullname" . }}
 spec:
   replicas: {{ .Values.worker.replicas }}
   selector:
@@ -55,12 +57,20 @@ spec:
           volumeMounts:
             - name: flink-config-volume
               mountPath: /opt/flink/conf
+            - name: application-module
+              mountPath: /opt/statefun/modules/application-module
       volumes:
         - name: flink-config-volume
           configMap:
-            name: flink-config
+            name: {{ include "deployment.fullname" . }}-flink-config
             items:
               - key: flink-conf.yaml
                 path: flink-conf.yaml
               - key: log4j-console.properties
                 path: log4j-console.properties
+        - name: application-module-volume
+          configMap:
+            name: {{ include "deployment.fullname" . }}-application-module
+            items:
+              - key: module.yaml
+                path: module.yaml

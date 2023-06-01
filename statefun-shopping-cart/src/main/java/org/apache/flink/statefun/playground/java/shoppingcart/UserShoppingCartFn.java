@@ -46,7 +46,7 @@ final class UserShoppingCartFn implements StatefulFunction {
 
   private static final Logger LOG = LoggerFactory.getLogger(UserShoppingCartFn.class);
 
-  static final TypeName TYPE = TypeName.typeNameFromString("com.example/user-shopping-cart");
+  static final TypeName TYPE = TypeName.typeNameFromString("shopping-cart/user-shopping-cart");
   static final ValueSpec<Basket> BASKET = ValueSpec.named("basket").withCustomType(Basket.TYPE);
 
   @Override
@@ -164,7 +164,7 @@ final class UserShoppingCartFn implements StatefulFunction {
 
     public static final Type<Basket> TYPE =
         SimpleType.simpleImmutableTypeFrom(
-            TypeName.typeNameFromString("com.example/Basket"),
+            TypeName.typeNameFromString("shopping-cart/Basket"),
             mapper::writeValueAsBytes,
             bytes -> mapper.readValue(bytes, Basket.class));
 
