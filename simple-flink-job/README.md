@@ -3,8 +3,6 @@
 Deploy a local simple-flink-job
 
 ```shell
-cd simple-flink-job
-
 # build the job
 ./mvnw clean package
 

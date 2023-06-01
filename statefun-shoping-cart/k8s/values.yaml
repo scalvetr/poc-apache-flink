@@ -1,5 +1,3 @@
-
-#
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -14,21 +12,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-FROM golang:1.16-alpine
-RUN apk add --no-cache git
+checkpoint:
+  dir: file:///checkpoint-dir
+  mode: EXACTLY_ONCE
+  interval: 10sec
 
-RUN mkdir -p /app
-WORKDIR /app
+ha:
+  id: statefun-shoping-cart-application
+  dir: file:///ha-ir
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
+master:
+  name: statefun-shoping-cart-master
+  image: localhost:5001/statefun-shoping-cart:latest # replace with your image
+  jvm_mem: 1g
+  container_mem: 1.5Gi
 
-COPY *.go ./
+worker:
+  name: statefun-shoping-cart-worker
+  image: localhost:5001/statefun-shoping-cart:latest # replace with your image
+  jvm_mem: 1g
+  container_mem: 1.5Gi
+  replicas: 1
 
-RUN go build -o /greeter
-
-EXPOSE 8000
-
-CMD [ "/greeter" ]
+ingress:
+  url: "statefun-shoping-cart.default.localtest.me"
+  className: "nginx"

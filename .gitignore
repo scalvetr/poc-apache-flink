@@ -3,4 +3,6 @@
 /simple-flink-job/simple-flink-job.iml
 /simple-flink-job/target/
 /simple-statefun/simple-flink-statefun-job.iml
-/statefun/java-job/flink-statefun-java-job.iml
+/statefun-shoping-cart/java-job/flink-statefun-java-job.iml
+/statefun-shoping-cart/target/
+/statefun-shoping-cart/shopping-cart.iml

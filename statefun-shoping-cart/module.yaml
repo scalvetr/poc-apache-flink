@@ -12,19 +12,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-kind: io.statefun.endpoints.v2/http
+
+kind: io.statefun-shoping-cart.endpoints.v2/http
 spec:
-  functions: example/*
-  urlPathTemplate: http://functions:8000/statefun
+  functions: com.example/*
+  urlPathTemplate: http://shopping-cart-functions:1108/
   transport:
-    type: io.statefun.transports.v1/async
+    type: io.statefun-shoping-cart.transports.v1/async
 ---
-kind: io.statefun.playground.v1/ingress
+kind: io.statefun-shoping-cart.playground.v1/ingress
 spec:
   port: 8090
 ---
-kind: io.statefun.playground.v1/egress
+kind: io.statefun-shoping-cart.playground.v1/egress
 spec:
   port: 8091
   topics:
-    - greetings
+    - receipts
