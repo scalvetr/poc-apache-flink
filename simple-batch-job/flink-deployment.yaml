@@ -32,5 +32,7 @@ spec:
     parallelism: 2
     upgradeMode: stateless
     args:
-      - "--input=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/in/largefile.txt"
-      - "--output=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/out/largefile.csv"
+      - "--input"
+      - "s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/in/largefile.txt"
+      - "--output"
+      - "s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/out/largefile.csv"
