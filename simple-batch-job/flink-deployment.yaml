@@ -14,23 +14,6 @@ spec:
     className: "nginx"
     #annotations:
     #  nginx.ingress.kubernetes.io/rewrite-target: "/$2"
-  podTemplate:
-    apiVersion: v1
-    kind: Pod
-    metadata:
-      name: simple-batch-job
-    spec:
-      containers:
-        # Do not change the main container name
-        - name: flink-main-container
-          volumeMounts:
-            - mountPath: /opt/flink/usrconfig
-              name: flink-usrconfig
-        # Sample sidecar container
-      volumes:
-        - name: flink-usrconfig
-          configMap:
-            name: simple-batch-job-config
   jobManager:
     resource:
       memory: "2048m"
@@ -44,5 +27,5 @@ spec:
     parallelism: 2
     upgradeMode: stateless
     args:
-      - "input=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/in/largefile.txt"
-      - "output=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/out/largefile.csv"
+      - "--input=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/in/largefile.txt"
+      - "--output=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/out/largefile.csv"

@@ -15,4 +15,4 @@ EXPOSE 6124
 EXPOSE 8081
 
 RUN mkdir /opt/flink/usrlib
-ADD target/simple-stream-job-*.jar /opt/flink/usrlib/simple-stream-job.jar
+ADD target/simple-stream-job-*.jar /opt/flink/usrlib/flink-job.jar

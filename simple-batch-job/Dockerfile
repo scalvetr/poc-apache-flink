@@ -15,4 +15,4 @@ EXPOSE 6124
 EXPOSE 8081
 
 RUN mkdir /opt/flink/usrlib
-ADD target/flink-job-*.jar /opt/flink/usrlib/flink-job.jar
+ADD target/simple-batch-job-*.jar /opt/flink/usrlib/flink-job.jar

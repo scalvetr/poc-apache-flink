@@ -27,9 +27,10 @@ Run the batch
 mc mb testdata/demo-bucket/in
 mc mb testdata/demo-bucket/out
 
-mc cp testdata/largefile.txt myminio/demo-bucket/in/largefile.txt
+mc cp testdata/largefile.txt myminio/demo-bucket/in/largefile.txt --insecure
 
-mc ls myminio myminio/demo-bucket/out --insecure
+mc ls myminio/demo-bucket/in --insecure
+mc ls myminio/demo-bucket/out --insecure
 ```
 
 ```shell

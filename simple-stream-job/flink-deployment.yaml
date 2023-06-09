@@ -40,7 +40,7 @@ spec:
       memory: "2048m"
       cpu: 1
   job:
-    jarURI: local:///opt/flink/usrlib/simple-stream-job.jar
+    jarURI: local:///opt/flink/usrlib/flink-job.jar
     parallelism: 2
     upgradeMode: stateless
 ---
