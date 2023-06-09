@@ -1,0 +1,46 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: {{ include "deployment.fullname" . }}
+spec:
+  image: {{ .Values.flink.image }}
+  imagePullPolicy: Always
+  flinkVersion: {{ .Values.flink.version }}
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "2"
+  logConfiguration:
+    log4j-console.properties: |+
+      rootLogger.level = INFO
+  serviceAccount: flink
+  ingress:
+    template: "{{ "{{" }}name{{ "{{" }}.{{ "{{" }}namespace{{ "{{" }}.localtest.me"
+    className: "nginx"
+  podTemplate:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: {{ include "deployment.fullname" . }}
+    spec:
+      containers:
+        # Do not change the main container name
+        - name: flink-main-container
+          volumeMounts:
+            - mountPath: /opt/statefun/modules/remote/
+              name: module-configuration
+        # Sample sidecar container
+      volumes:
+        - name: module-configuration
+          configMap:
+            name: {{ include "deployment.fullname" . }}-module-configuration
+            items:
+              - key: module.yaml
+                path: module.yaml
+  jobManager:
+    resource:
+      memory: {{ .Values.flink.jobmanager.container_mem }}
+      cpu: {{ .Values.flink.jobmanager.cpu }}
+  taskManager:
+    resource:
+      memory: {{ .Values.flink.taskmanager.container_mem }}
+      cpu: {{ .Values.flink.taskmanager.cpu }}
+

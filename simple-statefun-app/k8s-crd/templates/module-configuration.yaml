@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "deployment.fullname" . }}-module-configuration
+  labels:
+    app: {{ include "deployment.fullname" . }}
+data:
+  module.yaml: |+
+    version: "3.0"
+    module:
+      meta:
+        type: remote
+      spec:
+        endpoints:
+          meta:
+            kind: http
+          spec:
+            functions: shopping-cart/*
+            urlPathTemplate: http://{{ .Values.functions.shoppingcart.name }}:{{ .Values.functions.shoppingcart.port }}/{function.name}
+        ingresses:
+          - ingress:
+            meta:
+              type: io.statefun.kafka/ingress
+              id: shopping-cart/kafka-ingress
+            spec:
+              address: {{ .Values.kafka.broker }}
+              consumerGroupId: {{ include "deployment.fullname" . }}
+              startupPosition:
+                type: earliest
+              topics:
+                - topic:  {{ .Values.kafka.topics.message }}
+                  valueType: io.statefun.types/string
+                  targets:
+                    - shopping-cart/user-shopping-cart
+        egresses:
+          - egress:
+            meta:
+              type: io.statefun.kafka/egress
+              id: example/output-messages
+            spec:
+              address: {{ .Values.kafka.broker }}
+              deliverySemantic:
+                type: exactly-once
+                transactionTimeoutMillis: 100000

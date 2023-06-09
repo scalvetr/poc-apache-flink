@@ -1,0 +1,48 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: simple-batch-job
+spec:
+  image: localhost:5001/simple-batch-job:latest
+  imagePullPolicy: Always
+  flinkVersion: v1_17
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "2"
+  serviceAccount: flink
+  ingress:
+    template: "{{name}}.{{namespace}}.localtest.me"
+    className: "nginx"
+    #annotations:
+    #  nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+  podTemplate:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: simple-batch-job
+    spec:
+      containers:
+        # Do not change the main container name
+        - name: flink-main-container
+          volumeMounts:
+            - mountPath: /opt/flink/usrconfig
+              name: flink-usrconfig
+        # Sample sidecar container
+      volumes:
+        - name: flink-usrconfig
+          configMap:
+            name: simple-batch-job-config
+  jobManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  job:
+    jarURI: local:///opt/flink/usrlib/flink-job.jar
+    parallelism: 2
+    upgradeMode: stateless
+    args:
+      - "input=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/in/largefile.txt"
+      - "output=s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/out/largefile.csv"

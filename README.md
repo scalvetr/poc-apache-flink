@@ -11,7 +11,9 @@ and then deploy a simple job, developed in java.
 * [Deploy Kafka](doc/01_DEPLOY_KAFKA.md)
 * [Install Flink](doc/01_DEPLOY_KAFKA.md)
 
-## SCENARIOS
+## Examples
 
-Simple Job [here](simple-flink-job/README.md)
+Simple Stream Job [here](simple-stream-job/README.md)
+Simple Batch Job [here](simple-batch-job/README.md)
+Simple Statefun App [here](simple-statefun-app/README.md)
 
