@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.scalvetr</groupId>
   <artifactId>simple-batch-job</artifactId>
-  <name>Flink MinIO Source Job</name>
+  <name>Simple Batch Job</name>
   <version>0.0.1-SNAPSHOT</version>
   <url>http://www.myorganization.org</url>
   <build>

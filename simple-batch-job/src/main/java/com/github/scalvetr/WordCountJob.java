@@ -8,6 +8,8 @@ import org.apache.flink.api.java.utils.MultipleParameterTool;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.Preconditions;
 import com.github.scalvetr.util.WordCountData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implements the "WordCount" program that computes a simple word occurrence histogram over text
@@ -27,17 +29,22 @@ import com.github.scalvetr.util.WordCountData;
  * </ul>
  */
 public class WordCountJob {
+    private static final Logger LOG = LoggerFactory.getLogger(WordCountJob.class);
 
     // *************************************************************************
     //     PROGRAM
     // *************************************************************************
 
     public static void main(String[] args) throws Exception {
+        LOG.info("WordCountJob");
 
         final MultipleParameterTool params = MultipleParameterTool.fromArgs(args);
 
         // set up the execution environment
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+
+        LOG.info("config -> input={}", params.get("input"));
+        LOG.info("config -> output={}", params.get("output"));
 
         // make parameters available testdata the web interface
         env.getConfig().setGlobalJobParameters(params);
@@ -47,6 +54,7 @@ public class WordCountJob {
         if (params.has("input")) {
             // union all the inputs from text files
             for (String input : params.getMultiParameterRequired("input")) {
+                LOG.info("reading input -> {}", input);
                 if (text == null) {
                     text = env.readTextFile(input);
                 } else {
@@ -56,8 +64,8 @@ public class WordCountJob {
             Preconditions.checkNotNull(text, "Input DataSet should not be null.");
         } else {
             // get default test text data
-            System.out.println("Executing WordCount example with default input data set.");
-            System.out.println("Use --input to specify file input.");
+            LOG.info("Executing WordCount example with default input data set.");
+            LOG.info("Use --input to specify file input.");
             text = WordCountData.getDefaultTextLineDataSet(env);
         }
 
@@ -70,11 +78,13 @@ public class WordCountJob {
 
         // emit result
         if (params.has("output")) {
+            LOG.info("writing to output -> {}", params.get("output"));
             counts.writeAsCsv(params.get("output"), "\n", " ");
             // execute program
             env.execute("WordCount Example");
         } else {
-            System.out.println("Printing result to stdout. Use --output to specify output path.");
+            LOG.info("Printing result to stdout.");
+            LOG.info("Use --output to specify output path.");
             counts.print();
         }
     }

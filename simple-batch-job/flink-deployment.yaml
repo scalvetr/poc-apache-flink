@@ -8,6 +8,11 @@ spec:
   flinkVersion: v1_17
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "2"
+    # s3.access.key: ""
+    # s3.secret.key: ""
+    # s3.endpoint: ""
+    # s3.proxy.host: ""
+    # s3.proxy.port: ""
   serviceAccount: flink
   ingress:
     template: "{{name}}.{{namespace}}.localtest.me"
