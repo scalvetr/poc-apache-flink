@@ -30,7 +30,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: console.minio.localtest.me
+  - host: console.minio-operator.localtest.me
     http:
       paths:
       - backend:
@@ -56,7 +56,7 @@ EOF
 SA_TOKEN=$(kubectl -n minio-operator  get secret console-sa-secret -o jsonpath="{.data.token}" | base64 --decode)
 echo $SA_TOKEN
 
-echo "See: See: http://console.minio.localtest.me";
+echo "See: See: http://console.minio-operator.localtest.me";
 ```
 
 
@@ -108,5 +108,12 @@ mc mb myminio/demo-bucket --insecure
 
 # test
 mc ls myminio --insecure
+
+
+mc admin user svcacct add                                   \
+   --access-key "IFRVAFXyBPZFdUOPPE7U"                      \
+   --secret-key "JhP251bDsOQHe8ZNM1iEBIhzu2o9pYKTwsokpeCu"  \
+   --policy "doc/s3-policy.json"                            \
+   myminio minio --insecure
 
 ```
