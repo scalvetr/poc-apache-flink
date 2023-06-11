@@ -8,11 +8,16 @@ spec:
   flinkVersion: v1_17
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "2"
-    # s3.access.key: ""
-    # s3.secret.key: ""
-    # s3.endpoint: ""
-    # s3.proxy.host: ""
-    # s3.proxy.port: ""
+    # configure S3
+    # https://hadoop.apache.org/docs/stable/hadoop-aws/tools/hadoop-aws/index.html
+    #s3.access.key: "IFRVAFXyBPZFdUOPPE7U"
+    #s3.secret.key: "JhP251bDsOQHe8ZNM1iEBIhzu2o9pYKTwsokpeCu"
+    s3.access.key: "minio"
+    s3.secret.key: "minio123"
+    s3.endpoint: "http://myminio-hl.minio-tenant:9000"
+    #s3.path.style.access: "true"
+    #s3.proxy.host: ""
+    #s3.proxy.port: ""
   serviceAccount: flink
   ingress:
     template: "{{name}}.{{namespace}}.localtest.me"
@@ -33,6 +38,6 @@ spec:
     upgradeMode: stateless
     args:
       - "--input"
-      - "s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/in/largefile.txt"
+      - "s3://demo-bucket/in/largefile.txt"
       - "--output"
-      - "s3://myminio-hl.minio-tenant:9000/testdata/demo-bucket/out/largefile.csv"
+      - "s3://demo-bucket/out/largefile.csv"
