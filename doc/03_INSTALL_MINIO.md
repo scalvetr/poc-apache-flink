@@ -2,6 +2,12 @@
 
 See: https://min.io/docs/minio/kubernetes/upstream/operations/install-deploy-manage/deploy-operator-helm.html
 
+Prerequisites
+
+```shell
+brew install minio-mc
+```
+
 Install operator
 ```shell
 curl --create-dirs -O --output-dir target -O https://raw.githubusercontent.com/minio/operator/master/helm-releases/operator-5.0.5.tgz
@@ -102,7 +108,6 @@ echo "See: https://myminio-console.minio-tenant.localtest.me/"
 echo "username: minio \npassword: minio123"
 
 kubectl port-forward svc/myminio-hl 9000 -n minio-tenant &
-brew install minio-mc
 mc alias set myminio https://localhost:9000 minio minio123 --insecure
 mc mb myminio/demo-bucket --insecure
 
