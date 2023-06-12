@@ -1,5 +1,27 @@
 # Simple FLink Job
 
+Create the topics in kafka:
+```shell
+# create words_in
+kubectl -n confluent exec kafka-0 -- \
+kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic words_in \
+--create --partitions 1 \
+--replication-factor 1 \
+--config cleanup.policy=delete
+
+# create wordcount
+kubectl -n confluent exec kafka-0 -- \
+kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic wordcount \
+--create --partitions 1 \
+--replication-factor 1 \
+--config cleanup.policy=compact
+```
+
+
 Deploy a local simple-stream-job
 
 ```shell
@@ -36,6 +58,13 @@ kafka-console-consumer \
 --property print.key=true --property key.separator="= " \
 --bootstrap-server localhost:9092 \
 --topic wordcount
+
+# For testing or troubleshooting
+# consume words_in
+kubectl -n confluent exec kafka-0 -- \
+kafka-console-consumer \
+--bootstrap-server localhost:9092 \
+--topic words_in
 ```
 
 ```shell

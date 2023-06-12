@@ -6,6 +6,7 @@ Prerequisites
 
 ```shell
 brew install minio-mc
+brew install yq
 ```
 
 Install operator
@@ -16,6 +17,12 @@ helm install \
 --namespace minio-operator \
 --create-namespace \
 minio-operator target/operator-5.0.5.tgz
+
+kubectl wait --namespace minio-operator \
+  --for=condition=ready pod \
+  --selector=app=kafka \
+  --timeout=180s
+
 
 # scale in the operator deployment
 kubectl get deployment minio-operator -n minio-operator -o yaml > operator.yaml
@@ -71,12 +78,10 @@ Deploy a tenant
 ```shell
 curl --create-dirs -O --output-dir target -O https://raw.githubusercontent.com/minio/operator/master/helm-releases/tenant-5.0.5.tgz
 
-
 helm install \
 --namespace minio-tenant \
 --create-namespace \
 minio-tenant target/tenant-5.0.5.tgz
-
 
 # setup the ingress
 cat <<EOF | kubectl apply -f -
