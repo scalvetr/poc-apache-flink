@@ -8,6 +8,11 @@ spec:
   flinkVersion: v1_17
   flinkConfiguration:
     taskmanager.numberOfTaskSlots: "2"
+#    high-availability.type: kubernetes
+#    high-availability.storageDir: s3://flink/recovery
+#    s3.access.key: "minio"
+#    s3.secret.key: "minio123"
+#    s3.endpoint: "http://myminio-hl.minio-tenant:9000"
   serviceAccount: flink
   ingress:
     template: "{{name}}.{{namespace}}.localtest.me"
