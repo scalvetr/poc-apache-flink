@@ -115,6 +115,7 @@ echo "username: minio \npassword: minio123"
 kubectl port-forward svc/myminio-hl 9000 -n minio-tenant &
 mc alias set myminio https://localhost:9000 minio minio123 --insecure
 mc mb myminio/demo-bucket --insecure
+mc mb myminio/flink --insecure
 
 # test
 mc ls myminio --insecure
