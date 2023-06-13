@@ -1,9 +1,9 @@
-# POC Apache FLink
+# POC Apache Flink
 
 This POC will install a Flink on Kubernetes using 
 [native Kubernetes deployments](https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/resource-providers/native_kubernetes/)
 and the [Flink kuberntes operator](https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/concepts/overview/), 
-and then deploy a simple job, developed in java.
+and then deploy some simple jobs, developed in java.
 
 ## Prerequisites
 
@@ -11,9 +11,10 @@ and then deploy a simple job, developed in java.
 * [Deploy Kafka](doc/01_DEPLOY_KAFKA.md)
 * [Install Flink](doc/01_DEPLOY_KAFKA.md)
 
+
 ## Examples
 
-Simple Stream Job [here](simple-stream-job/README.md)
-Simple Batch Job [here](simple-batch-job/README.md)
-Simple Statefun App [here](simple-statefun-app/README.md)
+* Simple Stream Job [here](simple-stream-job/README.md)
+* Simple Batch Job [here](simple-batch-job/README.md)
+* Simple Statefun App [here](simple-statefun-app/README.md)
 
