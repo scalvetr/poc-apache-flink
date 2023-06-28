@@ -1,0 +1,92 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: simple-sql-job
+spec:
+  image: localhost:5001/simple-sql-job:latest
+  imagePullPolicy: Always
+  flinkVersion: v1_17
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "2"
+#    high-availability.type: kubernetes
+#    high-availability.storageDir: s3://flink/recovery
+#    s3.access.key: "minio"
+#    s3.secret.key: "minio123"
+#    s3.endpoint: "http://myminio-hl.minio-tenant:9000"
+  serviceAccount: flink
+  ingress:
+    template: "{{name}}.{{namespace}}.localtest.me"
+    className: "nginx"
+    #annotations:
+    #  nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+  podTemplate:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: simple-sql-job
+    spec:
+      containers:
+        # Do not change the main container name
+        - name: flink-main-container
+          volumeMounts:
+            - mountPath: /opt/flink/usrconfig
+              name: flink-usrconfig
+        # Sample sidecar container
+      volumes:
+        - name: flink-usrconfig
+          configMap:
+            name: simple-sql-job-config
+  jobManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  job:
+    jarURI: local:///opt/flink/usrlib/flink-job.jar
+    args: [ "/opt/flink/usrconfig/simple.sql" ]
+    parallelism: 2
+    upgradeMode: stateless
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: simple-sql-job-config
+  namespace: default
+data:
+  simple.sql: |
+    CREATE TABLE orders (
+      order_number BIGINT,
+      price        DECIMAL(32,2),
+      buyer        ROW<first_name STRING, last_name STRING>,
+      order_time   TIMESTAMP(3)
+      ) WITH (
+      'connector' = 'datagen'
+      );
+      
+      CREATE TABLE print_table WITH ('connector' = 'print')
+      LIKE orders;
+      
+      INSERT INTO print_table SELECT * FROM orders;
+  statement-set.sql: |
+    CREATE TABLE orders (
+      order_number BIGINT,
+      price        DECIMAL(32,2),
+      buyer        ROW<first_name STRING, last_name STRING>,
+      order_time   TIMESTAMP(3)
+    ) WITH (
+      'connector' = 'datagen'
+    );
+
+    CREATE TABLE print_table WITH ('connector' = 'print')
+        LIKE orders;
+    CREATE TABLE blackhole_table WITH ('connector' = 'blackhole')
+        LIKE orders;
+
+    EXECUTE STATEMENT SET
+    BEGIN
+    INSERT INTO print_table SELECT * FROM orders;
+    INSERT INTO blackhole_table SELECT * FROM orders;
+    END;

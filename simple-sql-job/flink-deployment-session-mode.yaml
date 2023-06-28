@@ -1,0 +1,44 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: simple-sql-job
+spec:
+  image: localhost:5001/simple-sql-job:latest
+  imagePullPolicy: Always
+  flinkVersion: v1_17
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "2"
+#    high-availability.type: kubernetes
+#    high-availability.storageDir: s3://flink/recovery
+#    s3.access.key: "minio"
+#    s3.secret.key: "minio123"
+#    s3.endpoint: "http://myminio-hl.minio-tenant:9000"
+  serviceAccount: flink
+  ingress:
+    template: "{{name}}.{{namespace}}.localtest.me"
+    className: "nginx"
+    #annotations:
+    #  nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+  jobManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flink-sql-client
+spec:
+  containers:
+    # Do not change the main container name
+    - name: flink-main-container
+      image: flink:1.17
+      env:
+        - name: FLINK_PROPERTIES
+          value: |+
+            jobmanager.rpc.address: jobmanager
+            rest.address: jobmanager
