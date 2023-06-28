@@ -1,0 +1,38 @@
+@startuml
+
+database claims_db as "Claims DB\n<<Mongo Db>>>"
+database policies_db as "Policies DB\n<<Mongo Db>>>"
+
+
+component weekly_report_batch as "Weekly Report\n<<Flink Batch>>"
+
+claims_db ---> weekly_report_batch
+policies_db ---> weekly_report_batch
+
+file weekly_report_file as "Weekly Report File\n<<CSV>>"
+
+weekly_report_batch -> weekly_report_file
+
+component fraud_detection as "Fraud Detection\n<<Flink Stream>>"
+
+claims_db ---> fraud_detection
+policies_db ---> fraud_detection
+
+database results_db as "Results DB\n<<Apache Druid>>"
+
+fraud_detection -> results_db
+
+component live_report as "Live Report\n<<Flink SQL>>"
+
+claims_db ---> live_report
+policies_db ---> live_report
+
+live_report -> results_db
+
+claims_db -left[hidden]- policies_db
+weekly_report_batch -left[hidden]- fraud_detection
+fraud_detection -left[hidden]- live_report
+
+fraud_detection -down[hidden]- results_db
+weekly_report_batch -down[hidden]- weekly_report_file
+@enduml
