@@ -67,8 +67,8 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/plugins/s3</outputDirectory>
-              <includeArtifactIds>flink-s3-fs-hadoop</includeArtifactIds>
+              <outputDirectory>${project.build.directory}/plugins/s3-fs-presto</outputDirectory>
+              <includeArtifactIds>flink-s3-fs-presto</includeArtifactIds>
             </configuration>
           </execution>
         </executions>
@@ -139,14 +139,38 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-streaming-java</artifactId>
-      <version>1.17.0</version>
+      <artifactId>flink-java</artifactId>
+      <version>1.17.1</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
           <artifactId>flink-core</artifactId>
           <groupId>org.apache.flink</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>commons-lang3</artifactId>
+          <groupId>org.apache.commons</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-math3</artifactId>
+          <groupId>org.apache.commons</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>chill-java</artifactId>
+          <groupId>com.twitter</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jsr305</artifactId>
+          <groupId>com.google.code.findbugs</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-streaming-java</artifactId>
+      <version>1.17.1</version>
+      <scope>provided</scope>
+      <exclusions>
         <exclusion>
           <artifactId>flink-file-sink-common</artifactId>
           <groupId>org.apache.flink</groupId>
@@ -156,30 +180,44 @@
           <groupId>org.apache.flink</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>flink-java</artifactId>
+          <artifactId>flink-shaded-guava</artifactId>
           <groupId>org.apache.flink</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>flink-shaded-guava</artifactId>
+          <artifactId>flink-core</artifactId>
           <groupId>org.apache.flink</groupId>
         </exclusion>
         <exclusion>
           <artifactId>commons-math3</artifactId>
           <groupId>org.apache.commons</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>jsr305</artifactId>
+          <groupId>com.google.code.findbugs</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-table-api-java</artifactId>
-      <version>1.17.0</version>
+      <version>1.17.1</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
           <artifactId>flink-table-common</artifactId>
           <groupId>org.apache.flink</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>jsr305</artifactId>
+          <groupId>com.google.code.findbugs</groupId>
+        </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-s3-fs-presto</artifactId>
+      <version>1.17.1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -199,7 +237,7 @@
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <flink.version>1.17.0</flink.version>
+    <flink.version>1.17.1</flink.version>
   </properties>
 </project>
 

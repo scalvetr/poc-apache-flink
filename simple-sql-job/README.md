@@ -22,26 +22,29 @@ kubectl apply -f flink-deployment.yaml
 # check the logs
 kubectl logs -f deploy/simple-sql-job
 # check the ui http://simple-sql-job.default.localtest.me/
+
+kubectl get pods\
+-l app=simple-sql-job\
+-l component=jobmanager
+
+kubectl exec --stdin --tty \
+simple-sql-job-f6b57f587-qn7r5 \
+-- /bin/bash
 ```
 
 Produce & consume
 ```shell
-# produce orders
-kubectl -n confluent exec --tty --stdin kafka-0 -- \
-kafka-console-producer \
---bootstrap-server localhost:9092 \
---topic orders
-
-# consume wordcount
+# consume orders
 kubectl -n confluent exec kafka-0 -- \
 kafka-console-consumer \
 --property print.key=true --property key.separator="= " \
 --bootstrap-server localhost:9092 \
---topic print_table
+--topic orders
 ```
 
 ```shell
 # delete the job
 kubectl delete -f flink-deployment.yaml
 ```
+
 ## Session mode

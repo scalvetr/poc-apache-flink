@@ -14,7 +14,8 @@ EXPOSE 6124
 # jobmanager web ui
 EXPOSE 8081
 
+# install plugins downloaded via maven
 ADD target/plugins /opt/flink/plugins
 
 RUN mkdir /opt/flink/usrlib
-ADD target/simple-stream-job-*.jar /opt/flink/usrlib/flink-job.jar
+ADD target/simple-sql-job-*.jar /opt/flink/usrlib/flink-job.jar

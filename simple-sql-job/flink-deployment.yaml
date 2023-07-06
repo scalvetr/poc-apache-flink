@@ -57,21 +57,7 @@ metadata:
   namespace: default
 data:
   simple.sql: |
-    CREATE TABLE orders (
-      order_number BIGINT,
-      price        DECIMAL(32,2),
-      buyer        ROW<first_name STRING, last_name STRING>,
-      order_time   TIMESTAMP(3)
-      ) WITH (
-      'connector' = 'datagen'
-      );
-      
-      CREATE TABLE print_table WITH ('connector' = 'print')
-      LIKE orders;
-      
-      INSERT INTO print_table SELECT * FROM orders;
-  statement-set.sql: |
-    CREATE TABLE orders (
+    CREATE TABLE orders_gen (
       order_number BIGINT,
       price        DECIMAL(32,2),
       buyer        ROW<first_name STRING, last_name STRING>,
@@ -79,14 +65,15 @@ data:
     ) WITH (
       'connector' = 'datagen'
     );
-
-    CREATE TABLE print_table WITH ('connector' = 'print')
-        LIKE orders;
-    CREATE TABLE blackhole_table WITH ('connector' = 'blackhole')
-        LIKE orders;
-
-    EXECUTE STATEMENT SET
-    BEGIN
-    INSERT INTO print_table SELECT * FROM orders;
-    INSERT INTO blackhole_table SELECT * FROM orders;
-    END;
+  
+    CREATE TABLE orders 
+    WITH (
+      'connector' = 'kafka',
+      'topic' = 'orders',
+      'properties.bootstrap.servers' = 'kafka.confluent:9092',
+      'properties.group.id' = 'simplesqljob',
+      'format' = 'csv',
+      'scan.startup.mode' = 'earliest-offset'
+    ) LIKE orders_gen;
+    
+    INSERT INTO orders SELECT * FROM orders_gen;
