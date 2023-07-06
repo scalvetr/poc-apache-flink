@@ -25,12 +25,11 @@ under the License.
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Simple Flink Job</name>
-    <url>http://www.myorganization.org</url>
+    <name>Simple Stream Job</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <flink.version>1.17.0</flink.version>
+        <flink.version>1.17.1</flink.version>
         <java.version>1.8</java.version>
         <!--scala.binary.version>2.11</scala.binary.version-->
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -61,38 +60,30 @@ under the License.
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
-            <version>${flink.version}</version>
-            <scope>provided</scope>
-        </dependency>
--->
-        <!-- Add connector dependencies here. They must be in the default scope (compile). -->
-
-        <!-- Example:
-
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-kafka-0.10_${scala.binary.version}</artifactId>
-            <version>${flink.version}</version>
-        </dependency>
--->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java</artifactId>
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Add connector dependencies here. They must be in the default scope (compile). -->
+        <!-- Example:
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-kafka-0.10_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+         -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
             <version>${flink.version}</version>
         </dependency>
+        <!-- plugins See: maven-dependency-plugin & Dockerfile-->
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-s3-fs-hadoop</artifactId>
+            <artifactId>flink-s3-fs-presto</artifactId>
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -105,9 +96,6 @@ under the License.
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.7</version>
-            <!--
-            <scope>runtime</scope>
-            -->
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -141,8 +129,8 @@ under the License.
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/plugins/s3</outputDirectory>
-                            <includeArtifactIds>flink-s3-fs-hadoop</includeArtifactIds>
+                            <outputDirectory>${project.build.directory}/plugins/s3-fs-presto</outputDirectory>
+                            <includeArtifactIds>flink-s3-fs-presto</includeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>
