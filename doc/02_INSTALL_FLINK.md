@@ -6,12 +6,12 @@ https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/try-
 ```shell
 kubectl create -f https://github.com/jetstack/cert-manager/releases/download/v1.8.2/cert-manager.yaml
 helm repo add flink-kubernetes-operator-1.5.0 https://archive.apache.org/dist/flink/flink-kubernetes-operator-1.5.0/
-helm install flink-kubernetes-operator flink-kubernetes-operator-1.5.0/flink-kubernetes-operator
+helm install flink-kubernetes-operator flink-kubernetes-operator-1.5.0/flink-kubernetes-operator --namespace flink --create-namespace
 
-kubectl get all
-helm list
+kubectl --namespace flink get all
+helm --namespace flink list
 
-kubectl wait --namespace default \
+kubectl wait --namespace flink \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/name=flink-kubernetes-operator \
   --timeout=180s
