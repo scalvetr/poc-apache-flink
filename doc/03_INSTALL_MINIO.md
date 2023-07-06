@@ -18,17 +18,19 @@ helm install \
 --create-namespace \
 minio-operator target/operator-5.0.5.tgz
 
-kubectl wait --namespace minio-operator \
-  --for=condition=ready pod \
-  --selector=app=kafka \
-  --timeout=180s
-
 
 # scale in the operator deployment
 kubectl get deployment minio-operator -n minio-operator -o yaml > operator.yaml
 yq -i -e '.spec.replicas |= 1' operator.yaml
 kubectl apply -f operator.yaml
 rm -fR operator.yaml
+
+
+kubectl wait --namespace minio-operator \
+  --for=condition=ready pod \
+  --selector=app=kafka \
+  --timeout=180s
+
 
 # setup the ingress
 cat <<EOF | kubectl apply -f -
@@ -71,8 +73,6 @@ echo $SA_TOKEN
 
 echo "See: See: http://console.minio-operator.localtest.me";
 ```
-
-
 
 Deploy a tenant
 ```shell

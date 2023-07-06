@@ -9,9 +9,9 @@
 Install on MacOS X
 
 ```shell
-brew install kind
-brew install kubectl
-brew install helm
+brew install kind # version 0.20.0
+brew install kubernetes-cli # version 1.27.3
+brew install helm # version 3.12.1
 
 # Validate kind
 kind version
@@ -39,7 +39,8 @@ fi
 
 ```shell
 # install ...
-cat <<EOF | kind create cluster --name poc-apache-flink --wait 5m --config=-
+v1.27.3
+cat <<EOF | kind create cluster --image kindest/node:v1.27.3 --name poc-apache-flink --wait 5m --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:

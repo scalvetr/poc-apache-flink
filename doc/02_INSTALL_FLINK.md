@@ -8,8 +8,13 @@ kubectl create -f https://github.com/jetstack/cert-manager/releases/download/v1.
 helm repo add flink-kubernetes-operator-1.5.0 https://archive.apache.org/dist/flink/flink-kubernetes-operator-1.5.0/
 helm install flink-kubernetes-operator flink-kubernetes-operator-1.5.0/flink-kubernetes-operator
 
-kubectl get pods
+kubectl get all
 helm list
+
+kubectl wait --namespace default \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/name=flink-kubernetes-operator \
+  --timeout=180s
 ```
 
 Deploy a sample job to test the Flink installation
