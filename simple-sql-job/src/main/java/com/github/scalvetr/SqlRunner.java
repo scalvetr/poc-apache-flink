@@ -20,7 +20,6 @@ package com.github.scalvetr;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.util.FileUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Main class for executing SQL scripts. */
+/**
+ * Main class for executing SQL scripts.
+ */
 public class SqlRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(SqlRunner.class);
@@ -42,10 +43,10 @@ public class SqlRunner {
         if (args.length != 1) {
             throw new Exception("Exactly one argument is expected.");
         }
-        var script = FileUtils.readFileUtf8(new File(args[0]));
-        var statements = parseStatements(script);
+        String script = FileUtils.readFileUtf8(new File(args[0]));
+        List<String> statements = parseStatements(script);
 
-        var tableEnv = TableEnvironment.create(new Configuration());
+        TableEnvironment tableEnv = TableEnvironment.create(new Configuration());
 
         for (String statement : statements) {
             LOG.info("Executing:\n{}", statement);
@@ -54,14 +55,14 @@ public class SqlRunner {
     }
 
     public static List<String> parseStatements(String script) {
-        var formatted = formatSqlFile(script).replaceAll(COMMENT_PATTERN, "");
-        var statements = new ArrayList<String>();
+        String formatted = formatSqlFile(script).replaceAll(COMMENT_PATTERN, "");
+        List<String> statements = new ArrayList<String>();
 
         StringBuilder current = null;
         boolean statementSet = false;
         for (String line : formatted.split("\n")) {
-            var trimmed = line.trim();
-            if (trimmed.isBlank()) {
+            String trimmed = line.trim();
+            if (trimmed.isEmpty()) {
                 continue;
             }
             if (current == null) {
