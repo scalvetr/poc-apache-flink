@@ -81,35 +81,12 @@ curl --create-dirs -O --output-dir target -O https://raw.githubusercontent.com/m
 helm install \
 --namespace minio-tenant \
 --create-namespace \
+--set ingres.console.enabled=true \
+--set ingres.console.ingressClassName=nginx \
+--set ingres.console.host=console.minio-tenant.localtest.me \
 minio-tenant target/tenant-5.0.5.tgz
 
-# setup the ingress
-cat <<EOF | kubectl apply -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: console
-  namespace: minio-tenant
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-  labels:
-    app.kubernetes.io/instance: minio-tenant
-    app.kubernetes.io/name: myminio-console
-spec:
-  ingressClassName: nginx
-  rules:
-  - host: myminio-console.minio-tenant.localtest.me
-    http:
-      paths:
-      - backend:
-          service:
-            name: myminio-console
-            port:
-              number: 9443
-        pathType: ImplementationSpecific
-EOF
-
-echo "See: https://myminio-console.minio-tenant.localtest.me/"
+echo "See: https://console.minio-tenant.localtest.me/"
 echo "username: minio \npassword: minio123"
 
 kubectl port-forward svc/myminio-hl 9000 -n minio-tenant &
