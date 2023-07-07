@@ -14,7 +14,7 @@ spec:
     #s3.secret.key: "JhP251bDsOQHe8ZNM1iEBIhzu2o9pYKTwsokpeCu"
     s3.access.key: "minio"
     s3.secret.key: "minio123"
-    s3.endpoint: "http://myminio-hl.minio-tenant:9000"
+    s3.endpoint: "http://tenant1-hl.minio-tenant1:9000"
     #s3.path.style.access: "true"
     #s3.proxy.host: ""
     #s3.proxy.port: ""

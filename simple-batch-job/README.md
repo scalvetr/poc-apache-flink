@@ -2,13 +2,13 @@
 
 Put the input data in the demo-bucket
 ```shell
-mc mb myminio/demo-bucket/in/ --insecure
-mc mb myminio/demo-bucket/out/ --insecure
+mc mb tenant1/demo-bucket/in/ --insecure
+mc mb tenant1/demo-bucket/out/ --insecure
 
-mc cp testdata/largefile.txt myminio/demo-bucket/in/largefile.txt --insecure
+mc cp testdata/largefile.txt tenant1/demo-bucket/in/largefile.txt --insecure
 
-mc ls myminio/demo-bucket/in --insecure
-mc ls myminio/demo-bucket/out --insecure
+mc ls tenant1/demo-bucket/in --insecure
+mc ls tenant1/demo-bucket/out --insecure
 ```
 
 Deploy a local simple-batch-job
