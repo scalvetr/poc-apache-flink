@@ -17,11 +17,6 @@ mongodb-operator mongodb/community-operator
 Deploy a database
 ```shell
 cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: mongodb
----
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
@@ -43,6 +38,8 @@ spec:
         - name: clusterAdmin
           db: admin
         - name: userAdminAnyDatabase
+          db: admin
+        - name: dbAdminAnyDatabase
           db: admin
       scramCredentialsSecretName: scram
   additionalMongodConfig:
@@ -67,8 +64,14 @@ kubectl wait --namespace mongodb \
   --for=condition=ready pod \
   --selector=app=mongodb-svc \
   --timeout=180s
+
+kubectl -n mongodb delete secret user-password
   
-kubectl apply -n mongodb -f doc/mongo-express.yml
+kubectl -n mongodb apply -f doc/mongo-express.yaml
+kubectl -n mongodb logs deployment/mongodb-express
+
+echo "Go to: http://express.mongodb.localtest.me/"
+# user:password
 ```
 
 Test

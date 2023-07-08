@@ -24,18 +24,21 @@ spec:
             - name: ME_CONFIG_MONGODB_ADMINUSERNAME
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-secret
-                  key: mongo-root-username
+                  name: mongodb-admin-user
+                  key: username
             - name: ME_CONFIG_MONGODB_ADMINPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-secret
-                  key: mongo-root-password
-            - name: ME_CONFIG_MONGODB_SERVER
-              valueFrom:
-                configMapKeyRef:
-                  name: mongodb-configmap
-                  key: database_url
+                  name: mongodb-admin-user
+                  key: password
+            - name: ME_CONFIG_MONGODB_URL
+              value: "mongodb://user:password@mongodb-0.mongodb-svc.mongodb.svc.cluster.local:27017"
+            - name: ME_CONFIG_MONGODB_ENABLE_ADMIN
+              value: "true"
+            - name: ME_CONFIG_BASICAUTH_USERNAME
+              value: "user"
+            - name: ME_CONFIG_BASICAUTH_PASSWORD
+              value: "password"
 ---
 apiVersion: v1
 kind: Service
@@ -45,9 +48,25 @@ metadata:
 spec:
   selector:
     app: mongodb-express
-  # type: LoadBalancer # Uncomment for external service
   ports:
     - protocol: TCP
       port: 8081
       targetPort: 8081
-      # nodePort: 30000 # Uncomment for external service
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mongodb-express
+  namespace: mongodb
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: express.mongodb.localtest.me
+      http:
+        paths:
+          - backend:
+              service:
+                name: mongodb-express
+                port:
+                  number: 8081
+            pathType: ImplementationSpecific
