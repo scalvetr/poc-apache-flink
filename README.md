@@ -19,8 +19,6 @@ and then deploy some simple jobs, developed in java.
 * Simple SQL Job (WIP) [here](simple-sql-job/README.md)
 * Simple Statefun App (WIP) [here](simple-statefun-app/README.md)
 
-# Sample Scenario
+## Sample Scenario Deployment digram
 
-Sample scenario has the objective to test the different flink apis.
-
-![Process](doc/process.png)
+![Deployment diagram](doc/deployment_diagram.png)

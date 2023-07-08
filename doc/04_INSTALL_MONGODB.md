@@ -8,9 +8,8 @@ Install operator
 helm repo add mongodb https://mongodb.github.io/helm-charts
 
 helm install \
---namespace mongodb-operator \
+--namespace mongodb \
 --create-namespace \
---set operator.watchNamespace="*" \
 mongodb-operator mongodb/community-operator
 
 ```
@@ -62,6 +61,14 @@ stringData:
   password: password
 EOF
 
+kubectl -n mongodb get events
+
+kubectl wait --namespace mongodb \
+  --for=condition=ready pod \
+  --selector=app=mongodb-svc \
+  --timeout=180s
+  
+kubectl apply -n mongodb -f doc/mongo-express.yml
 ```
 
 Test

@@ -1,0 +1,79 @@
+@startuml kubernetes
+
+footer deployment diagram
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 10
+
+' Kubernetes
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+
+!includeurl KubernetesPuml/OSS/KubernetesSvc.puml
+!includeurl KubernetesPuml/OSS/KubernetesIng.puml
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+!includeurl KubernetesPuml/OSS/KubernetesCrd.puml
+
+left to right direction
+
+actor "User" as userAlias
+
+' Kubernetes Components
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+    Namespace_Boundary(ns_flink_operator, "flink-operator") {
+        KubernetesPod(pod_flink_kubernetes_operator, "flink-kubernetes-operator", "")
+    }
+    Namespace_Boundary(ns_minio_operator, "minio-operator") {
+        KubernetesPod(pod_minio_operator, "minio-operator", "")
+        KubernetesPod(pod_minio_console, "console", "")
+        KubernetesSvc(svc_minio_console, "console", "")
+        KubernetesIng(ing_minio_console, "console.minio-operator.localtest.me", "")
+    }
+
+    Namespace_Boundary(ns_confluent, "confluent") {
+        KubernetesPod(pod_confluent_operator, "confluent-operator", "")
+        KubernetesPod(pod_kafka, "kafka", "")
+        KubernetesPod(pod_schemaregistry, "schemaregistry", "")
+        KubernetesPod(pod_zookeeper, "zookeeper", "")
+    }
+    Namespace_Boundary(ns_minio_tenant1, "minio-tenant1") {
+        KubernetesPod(pod_tenant1_ss, "tenant1-ss", "")
+        KubernetesSvc(svc_minio, "minio", "")
+        KubernetesSvc(svc_tenant1_console, "tenant1_console", "")
+        KubernetesIng(ing_tenant1_minio, "api.minio-tenant1.localtest.me", "")
+        KubernetesIng(ing_tenant1_console, "console.minio-tenant1.localtest.me", "")
+    }
+    Namespace_Boundary(ns_mongodb, "mongodb") {
+        KubernetesPod(pod_mongodb_kubernetes_operator, "mongodb-kubernetes-operator", "")
+        KubernetesPod(pod_mongodb_0, "mongodb-0", "")
+        KubernetesSvc(svc_mongodb, "mongodb-svc", "")
+        KubernetesPod(pod_mongo_express, "mongodb-express", "")
+        KubernetesSvc(svc_mongo_express, "mongodb-express", "")
+        KubernetesIng(ing_mongo_express, "express.mongodb.localtest.me", "")
+    }
+    Namespace_Boundary(ns_default, "default") {
+        KubernetesPod(pod_flink_job, "flink-job", "")
+    }
+}
+
+Rel(userAlias,ing_minio_console,"User access to management UI", "")
+Rel(ing_minio_console,svc_minio_console,"ingress to\nservice", "")
+Rel(svc_minio_console,pod_minio_console,"load Balances to Pods", "")
+Rel(userAlias,ing_tenant1_minio,"Apply commands through CLI", "")
+Rel(ing_tenant1_minio,svc_minio,"ingress to\nservice", "")
+Rel(userAlias,ing_tenant1_console,"User access to management UI", "")
+Rel(ing_tenant1_console,svc_tenant1_console,"ingress to\nservice", "")
+Rel(svc_minio,pod_tenant1_ss,"load Balances to Pods", "")
+Rel(svc_tenant1_console,pod_tenant1_ss,"load Balances to Pods", "")
+Rel(userAlias,ing_mongo_express,"User access to management UI", "")
+Rel(ing_mongo_express,svc_mongo_express,"ingress to\nservice", "")
+Rel(svc_mongo_express,pod_mongo_express,"load Balances to Pods", "")
+
+ns_minio_operator -[hidden]-> ns_flink_operator
+
+
+@enduml
