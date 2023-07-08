@@ -82,5 +82,6 @@ Test
 
 Uninstall
 ```shell
-helm uninstall mongodb-operator --namespace mongodb-operator
+helm uninstall mongodb-operator --namespace mongodb
+kubectl delete namespace mongodb
 ```
