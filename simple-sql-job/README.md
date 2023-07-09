@@ -23,13 +23,15 @@ kubectl apply -f flink-deployment.yaml
 kubectl logs -f deploy/simple-sql-job
 # check the ui http://simple-sql-job.default.localtest.me/
 
-kubectl get pods\
--l app=simple-sql-job\
+kubectl get pods \
+-l app=simple-sql-job \
 -l component=jobmanager
 
+export POD_NAME="`kubectl get pods -l app=simple-sql-job -l component=jobmanager -o custom-columns=":metadata.name" | tail -n1`";
+
 kubectl exec --stdin --tty \
-simple-sql-job-f6b57f587-qn7r5 \
--- /bin/bash
+${POD_NAME} \
+-- /bin/bash;
 ```
 
 Produce & consume
