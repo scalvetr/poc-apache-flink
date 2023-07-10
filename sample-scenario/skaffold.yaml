@@ -1,0 +1,7 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: sample-scenario
+requires:
+  - configs: ["sample-scenario-datagen"]
+    path: datagen/skaffold.yaml

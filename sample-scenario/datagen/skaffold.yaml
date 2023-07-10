@@ -1,0 +1,14 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: sample-scenario-datagen
+build:
+  artifacts:
+    - image: localhost:5001/sample-scenario-datagen
+      jib:
+        fromImage: flink:1.17
+        args:
+          - -Djib.allowInsecureRegistries=true
+manifests:
+  rawYaml:
+    - flink-deployment.yaml
