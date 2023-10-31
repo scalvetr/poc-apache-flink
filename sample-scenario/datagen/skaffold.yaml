@@ -1,14 +1,25 @@
-apiVersion: skaffold/v4beta6
+apiVersion: skaffold/v4beta7
 kind: Config
 metadata:
   name: sample-scenario-datagen
 build:
   artifacts:
     - image: localhost:5001/sample-scenario-datagen
-      jib:
-        fromImage: flink:1.17
-        args:
-          - -Djib.allowInsecureRegistries=true
+      #docker:
+      #  dockerfile: Dockerfile
+      custom:
+        # environment variable $IMG2 will be set to the build of image2
+        buildCommand: |
+          # Option: Staged
+          docker build . -f staged.Dockerfile --tag=$IMAGE
+          
+          # Option: Staged
+          #./mvnw clean package
+          #docker build . -f Dockerfile --tag=$IMAGE
+deploy:
+  kubectl:
+
+
 manifests:
   rawYaml:
     - flink-deployment.yaml

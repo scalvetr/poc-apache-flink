@@ -1,7 +1,9 @@
-apiVersion: skaffold/v4beta6
+apiVersion: skaffold/v4beta7
 kind: Config
 metadata:
   name: sample-scenario
+build:
+  local:
+    concurrency: 0 #builds all artifacts parallely
 requires:
-  - configs: ["sample-scenario-datagen"]
-    path: datagen/skaffold.yaml
+  - path: ./datagen

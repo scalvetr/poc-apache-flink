@@ -25,8 +25,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-zookeeper:7.4.0
-    init: confluentinc/confluent-init-container:2.6.0
+    application: confluentinc/cp-zookeeper:7.5.0
+    init: confluentinc/confluent-init-container:2.7.0
   dataVolumeCapacity: 10Gi
   logVolumeCapacity: 10Gi
   podTemplate:
@@ -39,6 +39,12 @@ spec:
       runAsUser: 1000
       runAsNonRoot: true
 EOF
+
+
+kubectl wait --namespace confluent \
+  --for=condition=ready pod \
+  --selector=app=zookeeper \
+  --timeout=180s
 ```
 
 
@@ -53,8 +59,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-server:7.4.0
-    init: confluentinc/confluent-init-container:2.6.0
+    application: confluentinc/cp-server:7.5.0
+    init: confluentinc/confluent-init-container:2.7.0
   dataVolumeCapacity: 10Gi
   configOverrides:
     server:
@@ -80,6 +86,11 @@ spec:
   metricReporter:
     enabled: true
 EOF
+
+kubectl wait --namespace confluent \
+  --for=condition=ready pod \
+  --selector=app=kafka \
+  --timeout=180s
 ```
 
 
@@ -94,8 +105,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-schema-registry:7.4.0
-    init: confluentinc/confluent-init-container:2.6.0
+    application: confluentinc/cp-schema-registry:7.5.0
+    init: confluentinc/confluent-init-container:2.7.0
   podTemplate:
     resources:
       requests:
@@ -107,10 +118,9 @@ spec:
       runAsNonRoot: true
 EOF
 
-
 kubectl wait --namespace confluent \
   --for=condition=ready pod \
-  --selector=app=kafka \
+  --selector=app=schemaregistry \
   --timeout=180s
 ```
 
