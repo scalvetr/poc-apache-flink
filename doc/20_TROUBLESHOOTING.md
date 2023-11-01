@@ -35,3 +35,12 @@ ${POD_NAME} \
 -- /bin/bash;
 
 ```
+
+## Docker Registry
+
+```shell
+curl -vv http://localhost:5001/v2/_catalog
+
+curl -X GET http://localhost:5000/v2/sample-scenario-datagen/tags/list
+
+```

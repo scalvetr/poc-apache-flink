@@ -1,11 +1,3 @@
-FROM maven:3.6-jdk-11 AS builder
-
-# add pom.xml and source code
-ADD ./pom.xml pom.xml
-ADD ./src src/
-
-RUN mvn clean package
-
 FROM flink:1.17
 
 EXPOSE 6121
@@ -23,7 +15,7 @@ EXPOSE 6124
 EXPOSE 8081
 
 # install plugins downloaded via maven
-COPY --from=builder target/plugins /opt/flink/plugins
+ADD target/plugins /opt/flink/plugins
 
 RUN mkdir /opt/flink/usrlib
-COPY --from=builder target/sample-scenario-datagen-*.jar /opt/flink/usrlib/flink-job.jar
+ADD target/sample-scenario-datagen-*.jar /opt/flink/usrlib/flink-job.jar

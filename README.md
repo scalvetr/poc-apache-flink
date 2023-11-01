@@ -1,16 +1,16 @@
 # POC Apache Flink
 
-This POC will install a Flink on Kubernetes using 
+This POC will install a Flink on Kubernetes using
 [native Kubernetes deployments](https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/resource-providers/native_kubernetes/)
-and the [Flink kuberntes operator](https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/concepts/overview/), 
+and
+the [Flink kubernetes operator](https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-main/docs/concepts/overview/),
 and then deploy some simple jobs, developed in java.
 
 ## Prerequisites
 
 * [Install local Kubernetes](doc/00_SETUP_LOCAL_K8S.md)
 * [Deploy Kafka](doc/01_DEPLOY_KAFKA.md)
-* [Install Flink](doc/01_DEPLOY_KAFKA.md)
-
+* [Install Flink](doc/02_INSTALL_FLINK.md)
 
 ## Simple Examples
 
@@ -19,6 +19,6 @@ and then deploy some simple jobs, developed in java.
 * Simple SQL Job (WIP) [here](simple-sql-job/README.md)
 * Simple Statefun App (WIP) [here](simple-statefun-app/README.md)
 
-## Sample Scenario Deployment digram
+## Sample Scenario Deployment diagram
 
 ![Deployment diagram](doc/deployment_diagram.png)

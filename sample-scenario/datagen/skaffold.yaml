@@ -1,25 +1,33 @@
-apiVersion: skaffold/v4beta7
+apiVersion: skaffold/v1
 kind: Config
 metadata:
   name: sample-scenario-datagen
 build:
+#  insecureRegistries:
+#    - localhost:5001
+  local:
+    push: false
   artifacts:
-    - image: localhost:5001/sample-scenario-datagen
+    - image: sampleScenarioDatagen
       #docker:
       #  dockerfile: Dockerfile
       custom:
         # environment variable $IMG2 will be set to the build of image2
         buildCommand: |
           # Option: Staged
-          docker build . -f staged.Dockerfile --tag=$IMAGE
+          #docker build . -f staged.Dockerfile --tag=$IMAGE
           
-          # Option: Staged
-          #./mvnw clean package
-          #docker build . -f Dockerfile --tag=$IMAGE
+          # Option: maven outside docker
+          ./mvnw clean package
+          docker build . -f Dockerfile --tag=$IMAGE
 deploy:
-  kubectl:
-
-
-manifests:
-  rawYaml:
-    - flink-deployment.yaml
+  helm:
+    releases:
+    - name: helm
+      chartPath: helm
+      #wait: true
+      setValueTemplates:
+        image.repository: "{{.IMAGE_REPO_sampleScenarioDatagen}}"
+        image.tag: "{{.IMAGE_TAG_sampleScenarioDatagen}}@{{.IMAGE_DIGEST_sampleScenarioDatagen}}"
+      setValues:
+        image.pullPolicy: "IfNotPresent"
