@@ -39,7 +39,7 @@ fi
 
 ```shell
 # install ...
-cat <<EOF | kind create cluster --image kindest/node:v1.28.3 --name poc-apache-flink --wait 5m --config=-
+cat <<EOF | kind create cluster --image kindest/node:v1.28.0 --name poc-apache-flink --wait 5m --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
