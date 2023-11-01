@@ -41,6 +41,6 @@ ${POD_NAME} \
 ```shell
 curl -vv http://localhost:5001/v2/_catalog
 
-curl -X GET http://localhost:5000/v2/sample-scenario-datagen/tags/list
+curl -vv http://localhost:5000/v2/samplescenariodatagen/tags/list
 
 ```

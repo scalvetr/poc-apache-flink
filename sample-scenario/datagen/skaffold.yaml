@@ -6,7 +6,7 @@ build:
 #  insecureRegistries:
 #    - localhost:5001
   local:
-    push: false
+    push: true
   artifacts:
     - image: sampleScenarioDatagen
       #docker:
@@ -20,10 +20,11 @@ build:
           # Option: maven outside docker
           ./mvnw clean package
           docker build . -f Dockerfile --tag=$IMAGE
+          docker image push $IMAGE
 deploy:
   helm:
     releases:
-    - name: helm
+    - name: datagen
       chartPath: helm
       #wait: true
       setValueTemplates:

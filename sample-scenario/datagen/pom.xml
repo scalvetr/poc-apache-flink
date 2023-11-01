@@ -19,10 +19,13 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.github.scalvetr</groupId>
+    <parent>
+        <groupId>com.github.scalvetr</groupId>
+        <artifactId>sample-scenario</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
     <artifactId>sample-scenario-datagen</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Sample Scenario Data Gen</name>
@@ -140,7 +143,9 @@ under the License.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.0.0</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
                 <executions>
                     <!-- Run shade goal on package phase -->
                     <execution>
@@ -149,24 +154,23 @@ under the License.
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadeTestJar>false</shadeTestJar>
+                            <finalName>datagen</finalName>
                             <artifactSet>
-                                <excludes>
-                                    <exclude>org.apache.flink:force-shading</exclude>
-                                    <exclude>com.google.code.findbugs:jsr305</exclude>
-                                    <exclude>org.slf4j:*</exclude>
-                                    <exclude>log4j:*</exclude>
-                                </excludes>
+                                <includes>
+                                    <include>org.apache.flink:flink-connector-datagen</include>
+                                    <include>org.jcuda:*</include>
+                                </includes>
                             </artifactSet>
                             <filters>
                                 <filter>
-                                    <!-- Do not copy the signatures in the META-INF folder.
-                                    Otherwise, this might cause SecurityExceptions when using the JAR. -->
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
+                                    <artifact>org.apache.flink:*</artifact>
+                                    <includes>
+                                        <include>org/apache/flink/connector/datagen/**</include>
+                                        <include>org/apache/flink/streaming/examples/gpu/MatrixVectorMul.class</include>
+                                        <include>org/apache/flink/streaming/examples/gpu/MatrixVectorMul$*.class
+                                        </include>
+                                    </includes>
                                 </filter>
                             </filters>
                             <transformers>
@@ -181,27 +185,6 @@ under the License.
             </plugin>
         </plugins>
 
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.google.cloud.tools</groupId>
-                    <artifactId>jib-maven-plugin</artifactId>
-                    <version>3.3.2</version>
-                    <!--<configuration>
-                        <containerizingMode>packaged</containerizingMode>
-                        <extraDirectories>
-                            <paths>
-                                <path>
-                                    <from>target/plugins</from>
-                                    <into>/opt/flink/plugins</into>
-                                </path>
-                            </paths>
-                        </extraDirectories>
-                    </configuration>
-                    -->
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 
     <!-- This profile helps to make things run out of the box in IntelliJ -->

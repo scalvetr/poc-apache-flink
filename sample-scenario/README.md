@@ -12,6 +12,8 @@ brew install skaffold
 skaffold dev
 
 echo "See: http://datagen.default.localtest.me/"
+
+kubectl logs -f deploy/datagen
 ```
 
 ## Data gen
