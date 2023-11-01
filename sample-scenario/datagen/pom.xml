@@ -155,7 +155,7 @@ under the License.
                         </goals>
                         <configuration>
                             <shadeTestJar>false</shadeTestJar>
-                            <finalName>datagen</finalName>
+                            <!--finalName>datagen</finalName-->
                             <artifactSet>
                                 <includes>
                                     <include>org.apache.flink:flink-connector-datagen</include>
