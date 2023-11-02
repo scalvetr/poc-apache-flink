@@ -23,9 +23,12 @@ build:
           docker image push $IMAGE
 deploy:
   helm:
+#    flags:
+#      global: [--debug]
     releases:
     - name: datagen
       chartPath: helm
+      
       #wait: true
       setValueTemplates:
         image.repository: "{{.IMAGE_REPO_sampleScenarioDatagen}}"

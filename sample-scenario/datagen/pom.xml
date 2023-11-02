@@ -76,6 +76,7 @@ under the License.
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
             <version>${flink.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- plugins See: maven-dependency-plugin & Dockerfile-->
         <dependency>
@@ -125,7 +126,7 @@ under the License.
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>flink-s3-fs-hadoop</id>
+                        <id>flink-s3-fs-presto</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
@@ -133,6 +134,17 @@ under the License.
                         <configuration>
                             <outputDirectory>${project.build.directory}/plugins/s3-fs-presto</outputDirectory>
                             <includeArtifactIds>flink-s3-fs-presto</includeArtifactIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>flink-connector-kafka</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/plugins/connector-kafka</outputDirectory>
+                            <includeArtifactIds>flink-connector-kafka</includeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>
@@ -159,6 +171,7 @@ under the License.
                             <artifactSet>
                                 <includes>
                                     <include>org.apache.flink:flink-connector-datagen</include>
+                                    <include>org.apache.flink:flink-connector-kafka</include>
                                     <include>org.jcuda:*</include>
                                 </includes>
                             </artifactSet>
@@ -167,6 +180,7 @@ under the License.
                                     <artifact>org.apache.flink:*</artifact>
                                     <includes>
                                         <include>org/apache/flink/connector/datagen/**</include>
+                                        <include>org/apache/flink/connector/kafka/**</include>
                                         <include>org/apache/flink/streaming/examples/gpu/MatrixVectorMul.class</include>
                                         <include>org/apache/flink/streaming/examples/gpu/MatrixVectorMul$*.class
                                         </include>

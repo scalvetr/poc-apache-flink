@@ -15,6 +15,7 @@ EXPOSE 6124
 EXPOSE 8081
 
 # install plugins downloaded via maven
+ENV FLINK_PLUGINS_DIR=/opt/flink/plugins
 ADD target/plugins /opt/flink/plugins
 
 RUN mkdir /opt/flink/usrlib

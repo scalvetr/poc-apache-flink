@@ -29,6 +29,7 @@ Test one image
 kubectl get pods -l app=simple-sql-job -l component=jobmanager -o custom-columns=":metadata.name"
 
 export POD_NAME="`kubectl get pods -l app=simple-sql-job -l component=jobmanager -o custom-columns=":metadata.name" | tail -n1`";
+#export POD_NAME="`kubectl get pods -l app=datagen -l component=jobmanager -o custom-columns=":metadata.name" | tail -n1`";
 
 kubectl exec --stdin --tty \
 ${POD_NAME} \
@@ -42,5 +43,13 @@ ${POD_NAME} \
 curl -vv http://localhost:5001/v2/_catalog
 
 curl -vv http://localhost:5000/v2/samplescenariodatagen/tags/list
+
+```
+## Docker Image
+
+```shell
+
+docker run -it 595a9824acd713b1af3a5025b7e222f2d7a0f6236be01ff0a50bc7d28e77221e find / > pod-content.txt
+docker run -it 595a9824acd713b1af3a5025b7e222f2d7a0f6236be01ff0a50bc7d28e77221e env
 
 ```
