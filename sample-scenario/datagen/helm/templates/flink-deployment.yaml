@@ -15,7 +15,7 @@ spec:
   #    s3.endpoint: "http://myminio-hl.minio-tenant:9000"
   serviceAccount: {{ .Values.serviceAccount.name }}
   ingress:
-    template: "{{ "{{" }}name{{ "}}" }}.{{ "{{" }}amespace{{ "}}" }}.localtest.me"
+    template: "{{ "{{" }}name{{ "}}" }}.{{ "{{" }}namespace{{ "}}" }}.localtest.me"
     className: "nginx"
     #annotations:
     #  nginx.ingress.kubernetes.io/rewrite-target: "/$2"

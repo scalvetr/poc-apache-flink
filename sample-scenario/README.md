@@ -9,7 +9,7 @@ Sample scenario has the objective to test the different flink apis.
 ```shell
 brew install skaffold
 
-skaffold dev
+skaffold dev -v trace
 
 echo "See: http://datagen.default.localtest.me/"
 

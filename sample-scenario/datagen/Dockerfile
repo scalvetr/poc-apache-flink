@@ -17,7 +17,5 @@ EXPOSE 8081
 # install plugins downloaded via maven
 ADD target/plugins /opt/flink/plugins
 
-ADD target/libs /opt/flink/lib
-
 RUN mkdir /opt/flink/usrlib
 ADD target/sample-scenario-datagen-*.jar /opt/flink/usrlib/flink-job.jar

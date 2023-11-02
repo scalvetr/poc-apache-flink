@@ -49,7 +49,7 @@ curl -vv http://localhost:5000/v2/samplescenariodatagen/tags/list
 
 ```shell
 
-docker run -it 595a9824acd713b1af3a5025b7e222f2d7a0f6236be01ff0a50bc7d28e77221e find / > pod-content.txt
-docker run -it 595a9824acd713b1af3a5025b7e222f2d7a0f6236be01ff0a50bc7d28e77221e env
+docker run -it 6028134404df077b7943956e332e68de1040a26b609d736ae34821aaf8063bfa find / > pod-content.txt
+docker run -it 6028134404df077b7943956e332e68de1040a26b609d736ae34821aaf8063bfa env
 
 ```
