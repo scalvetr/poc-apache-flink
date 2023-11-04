@@ -180,3 +180,43 @@ echo "See: http://kafka-ui.confluent.localtest.me";
 # helm uninstall -n confluent kafka-ui
 
 ```
+
+Test Kafka
+
+```shell
+kubectl run \
+-n default \
+kafka-producer \
+-it \
+--image=confluentinc/cp-server:7.5.0 \
+--rm=true \
+--restart=Never \
+-- \
+kafka-topics \
+--bootstrap-server kafka.confluent:9092 --topic my-topic --create --partitions 1 --replication-factor 1
+
+
+kubectl run \
+-n default \
+kafka-producer \
+-it \
+--image=confluentinc/cp-server:7.5.0 \
+--rm=true \
+--restart=Never \
+-- \
+kafka-console-producer \
+--bootstrap-server kafka.confluent:9092 \
+--topic my-topic
+
+kubectl run \
+-n default \
+kafka-producer \
+-it \
+--image=confluentinc/cp-server:7.5.0 \
+--rm=true \
+--restart=Never \
+-- \
+kafka-topics \
+--bootstrap-server kafka.confluent:9092 --topic my-topic --delete 
+
+```
