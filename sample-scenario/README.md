@@ -16,6 +16,22 @@ Install skaffold
 brew install skaffold
 ```
 
+Create Kafka topic
+
+```shell
+
+kubectl run \
+-n default \
+kafka-producer \
+-it \
+--image=confluentinc/cp-server:7.5.0 \
+--rm=true \
+--restart=Never \
+-- \
+kafka-topics \
+--bootstrap-server kafka.confluent:9092 --topic orders --create --partitions 1 --replication-factor 1
+```
+
 ## Build & Run
 ```shell
 skaffold dev -v trace
