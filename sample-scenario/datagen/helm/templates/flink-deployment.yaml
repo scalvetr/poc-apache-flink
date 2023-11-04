@@ -46,7 +46,7 @@ spec:
       cpu: 1
   job:
     jarURI: local:///opt/flink/usrlib/flink-job.jar
-    args: [ "/opt/flink/usrconfig/simple.sql" ]
+    args: [ "/opt/flink/usrconfig/flink.sql" ]
     parallelism: 2
     upgradeMode: stateless
 ---
@@ -56,7 +56,7 @@ metadata:
   name: {{ include "datagen.fullname" . }}-config
 data:
   {{- $files := .Files }}
-  {{- range tuple "simple.sql" }}
+  {{- range tuple "flink.sql" }}
   {{ . }}: |-
 {{ $files.Get . | nindent 4 }}
   {{- end }}
