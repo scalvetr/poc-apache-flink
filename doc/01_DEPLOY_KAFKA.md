@@ -124,9 +124,41 @@ kubectl wait --namespace confluent \
   --timeout=180s
 ```
 
-
 Troubleshooting
 ```shell
 kubectl -n confluent exec --stdin --tty kafka-0 -- /bin/bash
+```
+
+Kakfa UI
+```shell
+helm repo add kafka-ui https://provectus.github.io/kafka-ui-charts
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-ui-configmap
+data:
+  config.yml: |-
+    kafka:
+      clusters:
+        - name: kafka-cluster
+          bootstrapServers: kafka.confluent:9092
+    auth:
+      type: disabled
+    management:
+      health:
+        ldap:
+          enabled: false
+EOF
+
+helm install kafka-ui kafka-ui/kafka-ui \
+--set yamlApplicationConfigConfigMap.name="kafka-ui-configmap",\
+yamlApplicationConfigConfigMap.keyName="config.yml",\
+ingress.enabled=true,\
+ingress.ingressClassName="nginx",\
+ingress.host="kafka-ui.confluent.localtest.me"
+
+echo "See: http://kafka-ui.confluent.localtest.me";
 
 ```
