@@ -1,4 +1,4 @@
-/* https://nightlies.apache.org/flink/flink-docs-master/docs/connectors/table/datagen/#connector-options */
+/* https://nightlies.apache.org/flink/flink-docs-release-1.18/docs/connectors/table/datagen/#connector-options */
 CREATE TABLE orders_gen
 (
     order_number BIGINT,
@@ -9,8 +9,8 @@ CREATE TABLE orders_gen
     'connector' = 'datagen'
 );
 
-/* https://nightlies.apache.org/flink/flink-docs-master/docs/connectors/table/kafka/#connector-options */
-/* https://nightlies.apache.org/flink/flink-docs-master/docs/connectors/table/formats/avro-confluent/#format-options */
+/* https://nightlies.apache.org/flink/flink-docs-release-1.18/docs/connectors/table/kafka/#connector-options */
+/* https://nightlies.apache.org/flink/flink-docs-release-1.18/docs/connectors/table/formats/avro-confluent/#format-options */
 CREATE TABLE orders
 WITH (
     'connector' = 'kafka',
