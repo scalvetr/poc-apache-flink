@@ -10,15 +10,20 @@ CREATE TABLE orders_gen
 );
 
 /* https://nightlies.apache.org/flink/flink-docs-master/docs/connectors/table/kafka/#connector-options */
-
+/* https://nightlies.apache.org/flink/flink-docs-master/docs/connectors/table/formats/avro-confluent/#format-options */
 CREATE TABLE orders
 WITH (
     'connector' = 'kafka',
     'topic' = 'orders',
     'properties.bootstrap.servers' = 'kafka.confluent:9092',
-    'properties.group.id' = 'datagen',
-    'format' = 'csv',
-    'scan.startup.mode' = 'earliest-offset'
+
+    -- UTF-8 string as Kafka keys, using the 'the_kafka_key' table column
+    'key.format' = 'raw',
+    'key.fields' = 'order_number',
+
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://schemaregistry.confluent:8081'
+
 ) LIKE orders_gen;
 
 INSERT INTO orders

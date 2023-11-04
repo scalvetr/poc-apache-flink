@@ -145,7 +145,7 @@ data:
       clusters:
         - name: kafka-cluster
           bootstrapServers: kafka.confluent:9092
-          schemaRegistry: http://schemaregistry.confluent:8082
+          schemaRegistry: http://schemaregistry.confluent:8081
           #schemaRegistryAuth:
           #  username: username
           #  password: password
