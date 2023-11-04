@@ -112,5 +112,5 @@ kubectl cluster-info
 Uninstall
 ```shell
 kind delete cluster --name poc-apache-flink
-
+docker rm kind-registry
 ```
