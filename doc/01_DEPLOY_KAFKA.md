@@ -138,12 +138,17 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kafka-ui-configmap
+  namespace: confluent
 data:
   config.yml: |-
     kafka:
       clusters:
         - name: kafka-cluster
           bootstrapServers: kafka.confluent:9092
+          schemaRegistry: http://schemaregistry.confluent:8082
+          #schemaRegistryAuth:
+          #  username: username
+          #  password: password
     auth:
       type: disabled
     management:
@@ -152,13 +157,26 @@ data:
           enabled: false
 EOF
 
-helm install kafka-ui kafka-ui/kafka-ui \
+helm install -n confluent kafka-ui kafka-ui/kafka-ui \
 --set yamlApplicationConfigConfigMap.name="kafka-ui-configmap",\
 yamlApplicationConfigConfigMap.keyName="config.yml",\
 ingress.enabled=true,\
 ingress.ingressClassName="nginx",\
 ingress.host="kafka-ui.confluent.localtest.me"
 
+
+kubectl wait --namespace confluent \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/name=kafka-ui \
+  --timeout=180s
+
+kubectl logs -f -n confluent --selector=app.kubernetes.io/name=kafka-ui
+
+kubectl get pod -n confluent --selector=app.kubernetes.io/name=kafka-ui -oyaml
+
+
 echo "See: http://kafka-ui.confluent.localtest.me";
+
+# helm uninstall -n confluent kafka-ui
 
 ```
