@@ -1,21 +1,43 @@
-FROM flink:1.17
+FROM golang:1.20-alpine3.18 AS build-env
 
-EXPOSE 6121
+RUN apk update && apk add bash ca-certificates git gcc g++ libc-dev librdkafka-dev pkgconf
 
-# taskmanager rpc
-EXPOSE 6122
+# All these steps will be cached
+RUN mkdir /app
+WORKDIR /app
 
-# jobmanager rpc
-EXPOSE 6123
+COPY go.mod .
+COPY go.sum .
 
-# jobmanager blob server port
-EXPOSE 6124
+# Get dependancies - will also be cached if we won't change mod/sum
+RUN go mod download
 
-# jobmanager web ui
-EXPOSE 8081
+# COPY the source code as the last step
+COPY . .
 
-# install plugins downloaded via maven
-ADD target/plugins /opt/flink/plugins
+# https://github.com/confluentinc/confluent-kafka-go/blob/master/kafka/README.md#build-tags
+# Build the binary  CGO_ENABLED=0
+RUN go build -a -tags musl -o /go/bin/app
 
-RUN mkdir /opt/flink/usrlib
-ADD target/sample-scenario-datagen-*.jar /opt/flink/usrlib/flink-job.jar
+FROM alpine:3.18.4
+
+RUN apk add --no-cache libc6-compat bash
+COPY --from=build-env /go/bin/app /go/bin/app
+
+# Run
+ENV KAFKA_TOPIC_NAME="topic"
+ENV KAFKA_BOOTSTRAP_SERVERS="localhost:9092"
+ENV KAFKA_SCHEMA_REGISTRY_URL="http://localhost:8081"
+
+ENV CORE_BANKING_DB_HOST="localhost"
+ENV CORE_BANKING_DB_PORT="5432"
+ENV CORE_BANKING_DB_USER="user"
+ENV CORE_BANKING_DB_PASSWORD="password"
+ENV CORE_BANKING_DB_NAME="core-banking"
+
+ENV CONTACT_CENTER_DB_URI="mongodb://localhost:27017"
+ENV CONTACT_CENTER_DB_USER="user"
+ENV CONTACT_CENTER_DB_PASSWORD="password"
+ENV CONTACT_CENTER_DB_NAME="contact-center"
+
+ENTRYPOINT ["/go/bin/app"]

@@ -7,3 +7,4 @@ build:
     concurrency: 0 #builds all artifacts parallely
 requires:
   - path: ./datagen
+  - path: ./live-report

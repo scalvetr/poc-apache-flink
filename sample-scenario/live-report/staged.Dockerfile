@@ -26,4 +26,4 @@ EXPOSE 8081
 COPY --from=builder target/plugins /opt/flink/plugins
 
 RUN mkdir /opt/flink/usrlib
-COPY --from=builder target/sample-scenario-datagen-*.jar /opt/flink/usrlib/flink-job.jar
+COPY --from=builder target/sample-scenario-live-report-*.jar /opt/flink/usrlib/flink-job.jar

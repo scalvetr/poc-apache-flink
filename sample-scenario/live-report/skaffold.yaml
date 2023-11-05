@@ -1,0 +1,37 @@
+apiVersion: skaffold/v1
+kind: Config
+metadata:
+  name: sample-scenario-live-report
+build:
+#  insecureRegistries:
+#    - localhost:5001
+  local:
+    push: true
+  artifacts:
+    - image: sample-scenario-live-report
+      #docker:
+      #  dockerfile: Dockerfile
+      custom:
+        # environment variable $IMG2 will be set to the build of image2
+        buildCommand: |
+          # Option: Staged
+          #docker build . -f staged.Dockerfile --tag=$IMAGE
+          
+          # Option: maven outside docker
+          ./mvnw clean package
+          docker build . -f Dockerfile --tag=$IMAGE
+          docker image push $IMAGE
+deploy:
+  helm:
+#    flags:
+#      global: [--debug]
+    releases:
+    - name: live-report
+      chartPath: helm
+      
+      #wait: true
+      setValueTemplates:
+        image.repository: "{{.IMAGE_REPO_sample_scenario_live_report}}"
+        image.tag: "{{.IMAGE_TAG_sample_scenario_live_report}}@{{.IMAGE_DIGEST_sample_scenario_live_report}}"
+      setValues:
+        image.pullPolicy: "IfNotPresent"

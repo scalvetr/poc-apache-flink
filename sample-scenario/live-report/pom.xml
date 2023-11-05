@@ -21,7 +21,7 @@ under the License.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.scalvetr</groupId>
     <version>0.0.1-SNAPSHOT</version>
-    <artifactId>sample-scenario-datagen</artifactId>
+    <artifactId>sample-scenario-live-report</artifactId>
     <packaging>jar</packaging>
 
     <name>Sample Scenario Data Gen</name>
