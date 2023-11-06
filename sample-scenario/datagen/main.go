@@ -19,12 +19,12 @@ func main() {
 	policiesDbUri := u.GetEnv("POLICIES_DB_URI", "mongodb://localhost:27017")
 	policiesDbUser := u.GetEnv("POLICIES_DB_USER", "user")
 	policiesDbPassword := u.GetEnv("POLICIES_DB_PASSWORD", "password")
-	policiesDbName := u.GetEnv("POLICIES_DB_NAME", "contact-center")
+	policiesDbName := u.GetEnv("POLICIES_DB_NAME", "policies")
 	// claims repo
 	claimsDbUri := u.GetEnv("CLAIMS_DB_URI", "mongodb://localhost:27017")
 	claimsDbUser := u.GetEnv("CLAIMS_DB_USER", "user")
 	claimsDbPassword := u.GetEnv("CLAIMS_DB_PASSWORD", "password")
-	claimsDbName := u.GetEnv("CLAIMS_DB_NAME", "contact-center")
+	claimsDbName := u.GetEnv("CLAIMS_DB_NAME", "claims")
 
 	flag.Parse()
 	log.Printf("keySchemaFile: %v\n", *keySchemaFile)
