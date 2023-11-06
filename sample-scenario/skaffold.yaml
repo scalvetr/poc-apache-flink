@@ -1,4 +1,4 @@
-apiVersion: skaffold/v4beta7
+apiVersion: skaffold/v3
 kind: Config
 metadata:
   name: sample-scenario
@@ -6,5 +6,6 @@ build:
   local:
     concurrency: 0 #builds all artifacts parallely
 requires:
+  - path: ./env
   - path: ./datagen
   - path: ./live-report

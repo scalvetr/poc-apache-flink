@@ -1,0 +1,15 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: sample-scenario-env
+build:
+  local:
+    concurrency: 0 #builds all artifacts parallely
+deploy:
+  helm:
+    releases:
+      - name: community-operator
+        remoteChart: mongodb/community-operator
+        namespace: db
+        setValues:
+          image.pullPolicy: "IfNotPresent"
