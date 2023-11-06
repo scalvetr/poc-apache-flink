@@ -8,17 +8,12 @@ build:
   local:
     push: true
   artifacts:
-    - image: sampleScenarioDatagen
+    - image: sample-scenario-datagen
       #docker:
       #  dockerfile: Dockerfile
       custom:
         # environment variable $IMG2 will be set to the build of image2
         buildCommand: |
-          # Option: Staged
-          #docker build . -f staged.Dockerfile --tag=$IMAGE
-          
-          # Option: maven outside docker
-          ./mvnw clean package
           docker build . -f Dockerfile --tag=$IMAGE
           docker image push $IMAGE
 deploy:
@@ -31,7 +26,7 @@ deploy:
       
       #wait: true
       setValueTemplates:
-        image.repository: "{{.IMAGE_REPO_sampleScenarioDatagen}}"
-        image.tag: "{{.IMAGE_TAG_sampleScenarioDatagen}}@{{.IMAGE_DIGEST_sampleScenarioDatagen}}"
+        image.repository: "{{.IMAGE_REPO_sample_scenario_datagen}}"
+        image.tag: "{{.IMAGE_TAG_sample_scenario_datagen}}@{{.IMAGE_DIGEST_sample_scenario_datagen}}"
       setValues:
         image.pullPolicy: "IfNotPresent"
