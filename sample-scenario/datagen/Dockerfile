@@ -8,6 +8,9 @@ WORKDIR /app
 
 COPY go.mod .
 COPY go.sum .
+COPY model/go.mod model/
+COPY repository/go.mod repository/
+COPY util/go.mod util/
 
 # Get dependancies - will also be cached if we won't change mod/sum
 RUN go mod download
@@ -29,15 +32,15 @@ ENV KAFKA_TOPIC_NAME="topic"
 ENV KAFKA_BOOTSTRAP_SERVERS="localhost:9092"
 ENV KAFKA_SCHEMA_REGISTRY_URL="http://localhost:8081"
 
-ENV CORE_BANKING_DB_HOST="localhost"
-ENV CORE_BANKING_DB_PORT="5432"
-ENV CORE_BANKING_DB_USER="user"
-ENV CORE_BANKING_DB_PASSWORD="password"
-ENV CORE_BANKING_DB_NAME="core-banking"
 
-ENV CONTACT_CENTER_DB_URI="mongodb://localhost:27017"
-ENV CONTACT_CENTER_DB_USER="user"
-ENV CONTACT_CENTER_DB_PASSWORD="password"
-ENV CONTACT_CENTER_DB_NAME="contact-center"
+ENV POLICIES_DB_URI="mongodb://localhost:27017"
+ENV POLICIES_DB_USER="user"
+ENV POLICIES_DB_PASSWORD="password"
+ENV POLICIES_DB_NAME="policies"
+
+ENV CLAIMS_DB_URI="mongodb://localhost:27017"
+ENV CLAIMS_DB_USER="user"
+ENV CLAIMS_DB_PASSWORD="password"
+ENV CLAIMS_DB_NAME="claims"
 
 ENTRYPOINT ["/go/bin/app"]
