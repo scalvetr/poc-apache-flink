@@ -1,0 +1,2 @@
+The bean 'policyRepository', defined in com.github.scalvetr.poc.flink.datagen.repository.policies.PolicyRepository defined in @EnableMongoRepositories declared on MongoPolicyConfig, could not be registered.
+A bean with that name has already been defined in com.github.scalvetr.poc.flink.datagen.repository.policies.PolicyRepository defined in @EnableMongoRepositories declared on MongoClaimsConfig and overriding is disabled.
