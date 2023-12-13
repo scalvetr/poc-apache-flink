@@ -9,11 +9,13 @@ import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 
-public class KafkaUtils {
-    final String brokers;
+import java.util.Properties;
 
-    public KafkaUtils(String brokers) {
-        this.brokers = brokers;
+public class KafkaUtils {
+    final Properties kafkaProperties;
+
+    public KafkaUtils(Properties kafkaProperties) {
+        this.kafkaProperties = kafkaProperties;
     }
 
     public <K, V> KafkaSink<Tuple2<K, V>> buildKafkaSink(Class<K> keyClass, Class<V> valueClass,
@@ -27,7 +29,7 @@ public class KafkaUtils {
                 .build();
 
         return KafkaSink.<Tuple2<K, V>>builder()
-                .setBootstrapServers(brokers)
+                .setKafkaProducerConfig(kafkaProperties)
                 .setRecordSerializer(ser)
                 .setDeliveryGuarantee(DeliveryGuarantee.AT_LEAST_ONCE)
                 .build();
@@ -38,7 +40,7 @@ public class KafkaUtils {
                                                String inputTopic, String groupId) {
 
         return KafkaSource.<T>builder()
-                .setBootstrapServers(brokers)
+                .setProperties(kafkaProperties)
                 .setTopics(inputTopic)
                 .setGroupId(groupId)
                 .setStartingOffsets(OffsetsInitializer.earliest())

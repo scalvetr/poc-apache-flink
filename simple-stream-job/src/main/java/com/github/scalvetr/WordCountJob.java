@@ -53,26 +53,27 @@ public class WordCountJob {
 
     public static void main(String[] args) throws Exception {
         LOG.info("WordCountJob");
-        Properties kafkaProperties = new Properties();
-        kafkaProperties.load(new FileInputStream(new File("/opt/flink/usrconfig/kafka.properties")));
-        String brokers = kafkaProperties.getProperty("bootstrap.servers");
-        Properties jobProperties = new Properties();
-        jobProperties.load(new FileInputStream(new File("/opt/flink/usrconfig/job.properties")));
+        Properties jobProperties = loadProperties(args, 0, "job.properties");
+        Properties kafkaSinkProperties = loadProperties(args, 1, "kafka-sink.properties");
+        Properties kafkaSourceProperties = loadProperties(args, 2, "kafka-source.properties");
+
         String inputTopic = jobProperties.getProperty("input.topic");
         String outputTopic = jobProperties.getProperty("output.topic");
         String group = jobProperties.getProperty("group_id");
 
-        LOG.info("config -> brokers={}", brokers);
+        LOG.info("config -> sink.brokers={}", kafkaSinkProperties.getProperty("bootstrap.servers"));
+        LOG.info("config -> source.brokers={}", kafkaSourceProperties.getProperty("bootstrap.servers"));
         LOG.info("config -> inputTopic={}", inputTopic);
         LOG.info("config -> outputTopic={}", outputTopic);
         LOG.info("config -> group={}", group);
 
-        final KafkaUtils kafkaUtils = new KafkaUtils(brokers);
+        final KafkaUtils kafkaSinkUtils = new KafkaUtils(kafkaSinkProperties);
+        final KafkaUtils kafkaSourceUtils = new KafkaUtils(kafkaSourceProperties);
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         // setup source kafka
-        final KafkaSource<String> source = kafkaUtils.buildKafkaSource(String.class,
+        final KafkaSource<String> source = kafkaSourceUtils.buildKafkaSource(String.class,
                 new SimpleStringSchema(), inputTopic, group);
-        final KafkaSink<Tuple2<String, Integer>> sink = kafkaUtils.buildKafkaSink(String.class, Integer.class,
+        final KafkaSink<Tuple2<String, Integer>> sink = kafkaSinkUtils.buildKafkaSink(String.class, Integer.class,
                 new SimpleStringSchema(),
                 new IntSerializationScheme(), outputTopic);
 
@@ -102,6 +103,16 @@ public class WordCountJob {
         counts.sinkTo(sink);
         // execute program
         env.execute("Word Count");
+    }
+
+    private static Properties loadProperties(String[] args, int i, String defaultValue) throws Exception {
+        Properties props = new Properties();
+        if (args.length >= i + 1) {
+            props.load(new FileInputStream(new File(args[i])));
+        } else {
+            props.load(WordCountJob.class.getClassLoader().getResourceAsStream(defaultValue));
+        }
+        return props;
     }
 
     public static final class Tokenizer
