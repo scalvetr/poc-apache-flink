@@ -20,18 +20,18 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import java.util.Collections;
 
 @Configuration
-@EnableMongoRepositories(basePackageClasses = PolicyRepository.class, mongoTemplateRef = "mongoPolicyTemplate")
+@EnableMongoRepositories(basePackageClasses = PolicyRepository.class, mongoTemplateRef = "mongoPoliciesTemplate")
 @EnableConfigurationProperties
 public class MongoPolicyConfig {
 
-    @Bean(name = "mongoPolicyProperties")
+    @Bean(name = "mongoPoliciesProperties")
     @ConfigurationProperties(prefix = "mongodb.policies")
     public MongoProperties secondaryProperties() {
         return new MongoProperties();
     }
 
-    @Bean(name = "mongoPolicyClient")
-    public MongoClient mongoClient(@Qualifier("mongoPolicyProperties") MongoProperties mongoProperties) {
+    @Bean(name = "mongoPoliciesClient")
+    public MongoClient mongoClient(@Qualifier("mongoPoliciesProperties") MongoProperties mongoProperties) {
 
         MongoCredential credential = MongoCredential
                 .createCredential(mongoProperties.getUsername(), mongoProperties.getAuthenticationDatabase(), mongoProperties.getPassword());
@@ -45,12 +45,12 @@ public class MongoPolicyConfig {
 
     @Bean(name = "mongoPoliciesDBFactory")
     public MongoDatabaseFactory mongoDatabaseFactory(
-            @Qualifier("mongoPolicyClient") MongoClient mongoClient,
-            @Qualifier("mongoPolicyProperties") MongoProperties mongoProperties) {
+            @Qualifier("mongoPoliciesClient") MongoClient mongoClient,
+            @Qualifier("mongoPoliciesProperties") MongoProperties mongoProperties) {
         return new SimpleMongoClientDatabaseFactory(mongoClient, mongoProperties.getDatabase());
     }
 
-    @Bean(name = "mongoPolicyTemplate")
+    @Bean(name = "mongoPoliciesTemplate")
     public MongoTemplate mongoTemplate(@Qualifier("mongoPoliciesDBFactory") MongoDatabaseFactory mongoDatabaseFactory) {
         return new MongoTemplate(mongoDatabaseFactory);
     }

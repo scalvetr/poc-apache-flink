@@ -14,13 +14,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.Collections;
 
 @Configuration
-@EnableMongoRepositories(basePackageClasses = ClaimRepository.class, mongoTemplateRef = "primaryMongoTemplate")
+@EnableMongoRepositories(basePackageClasses = ClaimRepository.class, mongoTemplateRef = "mongoClaimsTemplate")
 @EnableConfigurationProperties
 public class MongoClaimsConfig {
     @Bean(name = "mongoClaimsProperties")
@@ -49,5 +50,11 @@ public class MongoClaimsConfig {
             @Qualifier("mongoClaimsClient") MongoClient mongoClient,
             @Qualifier("mongoClaimsProperties") MongoProperties mongoProperties) {
         return new SimpleMongoClientDatabaseFactory(mongoClient, mongoProperties.getDatabase());
+    }
+
+    @Primary
+    @Bean(name = "mongoClaimsTemplate")
+    public MongoTemplate mongoTemplate(@Qualifier("mongoClaimsDBFactory") MongoDatabaseFactory mongoDatabaseFactory) {
+        return new MongoTemplate(mongoDatabaseFactory);
     }
 }

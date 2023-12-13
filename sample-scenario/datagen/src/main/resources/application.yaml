@@ -1,15 +1,19 @@
 mongodb:
   claims:
     host: ${CLAIMS_DB_HOST:localhost}
-    database: ${CLAIMS_DB_DATABASE:db1}
-    authenticationDatabase: ${CLAIMS_DB_AUTH_DATABASE:admin}
-    username: ${CLAIMS_DB_USERNAME:user1}
-    password: ${CLAIMS_DB_PASSWORD:password}
     port: ${CLAIMS_DB_PORT:27017}
+    database: ${CLAIMS_DB_DATABASE:claimsdb}
+    authenticationDatabase: ${CLAIMS_DB_AUTH_DATABASE:admin}
+    username: ${CLAIMS_DB_USERNAME:user}
+    password: ${CLAIMS_DB_PASSWORD:password}
   policies:
     host: ${POLICIES_DB_HOST:localhost}
-    database: ${POLICIES_DB_DATABASE:db2}
-    authenticationDatabase: ${POLICIES_DB_AUTH_DATABASE:admin}
-    username: ${POLICIES_DB_USERNAME:user2}
-    password: ${POLICIES_DB_PASSWORD:password}
     port: ${POLICIES_DB_PORT:27017}
+    database: ${POLICIES_DB_DATABASE:policiesdb}
+    authenticationDatabase: ${POLICIES_DB_AUTH_DATABASE:admin}
+    username: ${POLICIES_DB_USERNAME:user}
+    password: ${POLICIES_DB_PASSWORD:password}
+
+logging:
+  level:
+    org.springframework.boot.autoconfigure: debug
