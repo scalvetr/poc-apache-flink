@@ -74,7 +74,7 @@ public class DatagenApplication implements CommandLineRunner {
                 log.info("POLICY: existing {}", policy.policyId());
             }
             var claim = claimDataGenerator.generateClaim(customer.customerId(), policy.policyId());
-            log.info("CLAIM: new {}", policy.policyId());
+            log.info("CLAIM: new {}", claim.claimId());
             Thread.sleep(sleepTime);
         }
 
