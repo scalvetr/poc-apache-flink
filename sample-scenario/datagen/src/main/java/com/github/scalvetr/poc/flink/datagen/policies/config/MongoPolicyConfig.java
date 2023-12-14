@@ -1,6 +1,6 @@
-package com.github.scalvetr.poc.flink.datagen.config;
+package com.github.scalvetr.poc.flink.datagen.policies.config;
 
-import com.github.scalvetr.poc.flink.datagen.repository.claims.ClaimRepository;
+import com.github.scalvetr.poc.flink.datagen.policies.repository.PolicyRepository;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -12,27 +12,28 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.lang.Nullable;
 
 import java.util.Collections;
 
 @Configuration
-@EnableMongoRepositories(basePackageClasses = ClaimRepository.class, mongoTemplateRef = "mongoClaimsTemplate")
+@EnableMongoRepositories(basePackageClasses = PolicyRepository.class, mongoTemplateRef = "mongoPoliciesTemplate")
 @EnableConfigurationProperties
-public class MongoClaimsConfig {
-    @Bean(name = "mongoClaimsProperties")
-    @ConfigurationProperties(prefix = "mongodb.claims")
-    @Primary
-    public MongoProperties primaryProperties() {
+public class MongoPolicyConfig {
+
+    @Bean(name = "mongoPoliciesProperties")
+    @ConfigurationProperties(prefix = "mongodb.policies")
+    public MongoProperties secondaryProperties() {
         return new MongoProperties();
     }
 
-    @Bean(name = "mongoClaimsClient")
-    public MongoClient mongoClient(@Qualifier("mongoClaimsProperties") MongoProperties mongoProperties) {
+    @Bean(name = "mongoPoliciesClient")
+    public MongoClient mongoClient(@Qualifier("mongoPoliciesProperties") MongoProperties mongoProperties) {
 
         MongoCredential credential = MongoCredential
                 .createCredential(mongoProperties.getUsername(), mongoProperties.getAuthenticationDatabase(), mongoProperties.getPassword());
@@ -44,17 +45,15 @@ public class MongoClaimsConfig {
                 .build());
     }
 
-    @Primary
-    @Bean(name = "mongoClaimsDBFactory")
+    @Bean(name = "mongoPoliciesDBFactory")
     public MongoDatabaseFactory mongoDatabaseFactory(
-            @Qualifier("mongoClaimsClient") MongoClient mongoClient,
-            @Qualifier("mongoClaimsProperties") MongoProperties mongoProperties) {
+            @Qualifier("mongoPoliciesClient") MongoClient mongoClient,
+            @Qualifier("mongoPoliciesProperties") MongoProperties mongoProperties) {
         return new SimpleMongoClientDatabaseFactory(mongoClient, mongoProperties.getDatabase());
     }
 
-    @Primary
-    @Bean(name = "mongoClaimsTemplate")
-    public MongoTemplate mongoTemplate(@Qualifier("mongoClaimsDBFactory") MongoDatabaseFactory mongoDatabaseFactory) {
-        return new MongoTemplate(mongoDatabaseFactory);
+    @Bean(name = "mongoPoliciesTemplate")
+    public MongoTemplate mongoTemplate(@Qualifier("mongoPoliciesDBFactory") MongoDatabaseFactory mongoDatabaseFactory, @Nullable MongoConverter mongoConverter) {
+        return new MongoTemplate(mongoDatabaseFactory, mongoConverter);
     }
 }

@@ -2,18 +2,21 @@ mongodb:
   claims:
     host: ${CLAIMS_DB_HOST:localhost}
     port: ${CLAIMS_DB_PORT:27017}
-    database: ${CLAIMS_DB_DATABASE:claimsdb}
-    authenticationDatabase: ${CLAIMS_DB_AUTH_DATABASE:admin}
+    database: ${CLAIMS_DB_DATABASE:db}
+    authenticationDatabase: ${CLAIMS_DB_AUTH_DATABASE:db}
     username: ${CLAIMS_DB_USERNAME:user}
     password: ${CLAIMS_DB_PASSWORD:password}
   policies:
     host: ${POLICIES_DB_HOST:localhost}
     port: ${POLICIES_DB_PORT:27017}
-    database: ${POLICIES_DB_DATABASE:policiesdb}
-    authenticationDatabase: ${POLICIES_DB_AUTH_DATABASE:admin}
+    database: ${POLICIES_DB_DATABASE:db}
+    authenticationDatabase: ${POLICIES_DB_AUTH_DATABASE:db}
     username: ${POLICIES_DB_USERNAME:user}
     password: ${POLICIES_DB_PASSWORD:password}
 
 logging:
   level:
-    org.springframework.boot.autoconfigure: debug
+    root: warn
+    com.github.scalvetr.poc.flink.datagen: debug
+    org.springframework.boot.docker.compose: debug
+    #org.springframework.boot.autoconfigure: debug

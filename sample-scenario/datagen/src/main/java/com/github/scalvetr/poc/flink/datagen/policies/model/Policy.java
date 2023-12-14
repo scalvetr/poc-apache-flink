@@ -1,4 +1,4 @@
-package com.github.scalvetr.poc.flink.datagen.model;
+package com.github.scalvetr.poc.flink.datagen.policies.model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,4 +1,4 @@
-package com.github.scalvetr.poc.flink.datagen.model;
+package com.github.scalvetr.poc.flink.datagen.customers.model;
 
 public record Address(
         String street,

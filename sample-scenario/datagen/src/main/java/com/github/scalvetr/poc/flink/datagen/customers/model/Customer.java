@@ -1,9 +1,9 @@
-package com.github.scalvetr.poc.flink.datagen.model;
+package com.github.scalvetr.poc.flink.datagen.customers.model;
 
 import java.util.List;
 
 public record Customer(
-        String customreId,
+        String customerId,
         String name,
         String surname,
         String email,
