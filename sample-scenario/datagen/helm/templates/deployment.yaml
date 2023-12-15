@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "live-report.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "live-report.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "live-report.fullname" . }}
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          env:
+            # Claims db
+            - name: CLAIMS_DB_HOST
+              value: {{ .Values.mongodb.claims.host }}
+            - name: CLAIMS_DB_PORT
+              value: {{ .Values.mongodb.claims.port }}
+            - name: CLAIMS_DB_DATABASE
+              value: {{ .Values.mongodb.claims.database }}
+            - name: CLAIMS_DB_AUTH_DATABASE
+              value: {{ .Values.mongodb.claims.authenticationDatabase }}
+            - name: CLAIMS_DB_USERNAME
+              value: {{ .Values.mongodb.claims.username }}
+            - name: CLAIMS_DB_PASSWORD
+              value: {{ .Values.mongodb.claims.password }}
+            # Policies db
+            - name: POLICIES_DB_HOST
+              value: {{ .Values.mongodb.policies.host }}
+            - name: POLICIES_DB_PORT
+              value: {{ .Values.mongodb.policies.port }}
+            - name: POLICIES_DB_DATABASE
+              value: {{ .Values.mongodb.policies.database }}
+            - name: POLICIES_DB_AUTH_DATABASE
+              value: {{ .Values.mongodb.policies.authenticationDatabase }}
+            - name: POLICIES_DB_USERNAME
+              value: {{ .Values.mongodb.policies.username }}
+            - name: POLICIES_DB_PASSWORD
+              value: {{ .Values.mongodb.policies.password }}
+            # Customers kafka topic
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: {{ .Values.kafka.bootstrap_servers }}
+            - name: KAFKA_SCHEMA_REGISTRY
+              value: {{ .Values.kafka.schema_registry_url }}
+            - name: KAFKA_CUSTOMERS_TOPIC
+              value: {{ .Values.kafka.topics.customers }}

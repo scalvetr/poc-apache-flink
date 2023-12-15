@@ -25,7 +25,7 @@ spring:
 
 app:
   kafka:
-    topic: ${KAFKA_TOPIC:consumers}
+    topic: ${KAFKA_CUSTOMERS_TOPIC:customers}
 
 logging:
   level:

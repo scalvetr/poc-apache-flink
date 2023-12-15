@@ -1,0 +1,25 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: sample-scenario-datagen
+build:
+  artifacts:
+    - image: psample-scenario-datagen
+      buildpacks:
+        builder: paketobuildpacks/builder:base
+  tagPolicy:
+    gitCommit: {}
+deploy:
+  helm:
+#    flags:
+#      global: [--debug]
+    releases:
+    - name: live-report
+      chartPath: helm
+      
+      #wait: true
+      setValueTemplates:
+        image.repository: "{{.IMAGE_REPO_sample_scenario_live_report}}"
+        image.tag: "{{.IMAGE_TAG_sample_scenario_live_report}}@{{.IMAGE_DIGEST_sample_scenario_live_report}}"
+      setValues:
+        image.pullPolicy: "IfNotPresent"

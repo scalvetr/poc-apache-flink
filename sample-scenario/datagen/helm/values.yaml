@@ -1,0 +1,37 @@
+
+image:
+  repository: localhost:5001/sample-scenario-datagen
+  pullPolicy: IfNotPresent
+
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "flink"
+
+mongodb:
+  claims:
+    host: localhost
+    port: 27017
+    database: db
+    authenticationDatabase: db
+    username: user
+    password: password
+  policies:
+    host: localhost
+    port: 27017
+    database: db
+    authenticationDatabase: db
+    username: user
+    password: password
+kafka:
+  bootstrap_servers: localhost:9092
+  schema_registry_url: http://localhost:8081
+  topics:
+    customers: customers

@@ -28,7 +28,7 @@ Environment variables
 | POLICIES_DB_PASSWORD      | MongoDB Password                    | password              |
 | KAFKA_BOOTSTRAP_SERVERS   | Bootstrap servers                   | localhost:9092        |
 | KAFKA_SCHEMA_REGISTRY     | Schema registry url                 | http://localhost:8081 |
-| KAFKA_CUSTOMERS_TOPIC     | Topic where consumers are published | consumers             |
+| KAFKA_CUSTOMERS_TOPIC     | Topic where consumers are published | customers             |
 
 
 
@@ -42,5 +42,5 @@ docker compose up -d
 docker exec -it broker kafka-console-consumer \
 --property print.key=true --property key.separator="= " \
 --bootstrap-server localhost:9092 \
---topic test-topic
+--topic customers
 ```

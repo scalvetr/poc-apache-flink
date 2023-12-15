@@ -3,11 +3,18 @@
 database claims_db as "Claims DB\n<<Mongo Db>>>"
 database policies_db as "Policies DB\n<<Mongo Db>>>"
 
+queue customers_topic as "customers\n<<Kafka Topic>>"
+queue policies_topic as "policies\n<<Kafka Topic>>"
+queue claims_topic as "claims\n<<Kafka Topic>>"
 
 component weekly_report_batch as "Weekly Report\n<<Flink Batch>>"
 
-claims_db ---> weekly_report_batch
-policies_db ---> weekly_report_batch
+claims_db ---> claims_topic
+policies_db ---> policies_topic
+
+claims_topic ---> weekly_report_batch
+policies_topic ---> weekly_report_batch
+customers_topic ---> weekly_report_batch
 
 file weekly_report_file as "Weekly Report File\n<<CSV>>"
 
@@ -15,8 +22,9 @@ weekly_report_batch -> weekly_report_file
 
 component fraud_detection as "Fraud Detection\n<<Flink Stream>>"
 
-claims_db ---> fraud_detection
-policies_db ---> fraud_detection
+claims_topic ---> fraud_detection
+policies_topic ---> fraud_detection
+customers_topic ---> fraud_detection
 
 database results_db as "Results DB\n<<Apache Druid>>"
 
@@ -24,12 +32,12 @@ fraud_detection -> results_db
 
 component live_report as "Live Report\n<<Flink SQL>>"
 
-claims_db ---> live_report
-policies_db ---> live_report
+claims_topic ---> live_report
+policies_topic ---> live_report
+customers_topic ---> live_report
 
 live_report -> results_db
 
-claims_db -left[hidden]- policies_db
 weekly_report_batch -left[hidden]- fraud_detection
 fraud_detection -left[hidden]- live_report
 
