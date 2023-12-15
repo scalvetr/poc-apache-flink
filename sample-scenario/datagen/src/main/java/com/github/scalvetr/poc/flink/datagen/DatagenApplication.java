@@ -1,8 +1,8 @@
 package com.github.scalvetr.poc.flink.datagen;
 
+import com.github.scalvetr.poc.flink.customer.model.Customer;
 import com.github.scalvetr.poc.flink.datagen.claims.ClaimDataGenerator;
 import com.github.scalvetr.poc.flink.datagen.customers.CustomerDataGenerator;
-import com.github.scalvetr.poc.flink.datagen.customers.model.Customer;
 import com.github.scalvetr.poc.flink.datagen.policies.PolicyDataGenerator;
 import com.github.scalvetr.poc.flink.datagen.policies.model.Policy;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class DatagenApplication implements CommandLineRunner {
             Policy policy = null;
             if (cache.size() < cacheSize || random.nextBoolean()) {
                 customer = customerDataGenerator.generateCustomer();
-                log.info("CUSTOMER: new {}", customer.customerId());
+                log.info("CUSTOMER: new {}", customer.getCustomerId());
                 if (cache.size() >= cacheSize) {
                     customerRemoved = cache.remove(random.nextInt(cache.size()) - 1);
                 }
@@ -60,20 +60,20 @@ public class DatagenApplication implements CommandLineRunner {
                 Thread.sleep(sleepTime);
             } else {
                 customer = cache.get(random.nextInt(cache.size()) - 1);
-                log.info("CUSTOMER: existing {}", customer.customerId());
+                log.info("CUSTOMER: existing {}", customer.getCustomerId());
             }
             var policiesList = policiesCache.getOrDefault(customer, new ArrayList<>());
             if (policiesList.size() < maxPolicies || random.nextBoolean()) {
-                policy = policyDataGenerator.generatePolicy(customer.customerId());
+                policy = policyDataGenerator.generatePolicy(customer.getCustomerId());
                 log.info("POLICY: new {}", policy.policyId());
                 policiesList.add(policy);
-                policiesCache.put(customer.customerId(), policiesList);
+                policiesCache.put(customer.getCustomerId(), policiesList);
                 Thread.sleep(sleepTime);
             } else {
                 policy = policiesList.get(random.nextInt(policiesList.size()) - 1);
                 log.info("POLICY: existing {}", policy.policyId());
             }
-            var claim = claimDataGenerator.generateClaim(customer.customerId(), policy.policyId());
+            var claim = claimDataGenerator.generateClaim(customer.getCustomerId(), policy.policyId());
             log.info("CLAIM: new {}", claim.claimId());
             Thread.sleep(sleepTime);
         }

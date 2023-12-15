@@ -2,9 +2,7 @@ package com.github.scalvetr.poc.flink.datagen.claims;
 
 import com.github.scalvetr.poc.flink.datagen.claims.model.Claim;
 import com.github.scalvetr.poc.flink.datagen.claims.repository.ClaimRepository;
-import com.github.scalvetr.poc.flink.datagen.customers.model.Customer;
 import net.datafaker.Faker;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;

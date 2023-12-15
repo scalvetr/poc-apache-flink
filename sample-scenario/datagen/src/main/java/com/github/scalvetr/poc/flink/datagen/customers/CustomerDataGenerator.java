@@ -1,8 +1,8 @@
 package com.github.scalvetr.poc.flink.datagen.customers;
 
-import com.github.scalvetr.poc.flink.datagen.customers.model.Address;
-import com.github.scalvetr.poc.flink.datagen.customers.model.Customer;
-import com.github.scalvetr.poc.flink.datagen.customers.model.Telephone;
+import com.github.scalvetr.poc.flink.customer.model.Address;
+import com.github.scalvetr.poc.flink.customer.model.Customer;
+import com.github.scalvetr.poc.flink.customer.model.Telephone;
 import com.github.scalvetr.poc.flink.datagen.customers.producer.CustomerProducer;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
