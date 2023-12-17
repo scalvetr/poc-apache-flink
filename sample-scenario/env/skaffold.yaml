@@ -8,8 +8,18 @@ build:
 deploy:
   helm:
     releases:
+      # https://github.com/mongodb/mongodb-kubernetes-operator/blob/master/README.md
       - name: community-operator
         remoteChart: mongodb/community-operator
-        namespace: db
+        namespace: mongodb
+        setValues:
+          image.pullPolicy: "IfNotPresent"
+      - name: env
+        chartPath: helm
+
+        #wait: true
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_sample_scenario_live_report}}"
+          image.tag: "{{.IMAGE_TAG_sample_scenario_live_report}}@{{.IMAGE_DIGEST_sample_scenario_live_report}}"
         setValues:
           image.pullPolicy: "IfNotPresent"

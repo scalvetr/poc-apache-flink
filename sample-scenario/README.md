@@ -2,7 +2,7 @@
 
 Sample scenario has the objective to test the different flink apis.
 
-![Process](../doc/sample_scenario.png)
+![Sample Scenario](../doc/img/sample_scenario.png)
 
 
 ## Prerequisites

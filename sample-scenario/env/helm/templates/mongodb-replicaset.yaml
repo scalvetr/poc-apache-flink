@@ -1,0 +1,49 @@
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: {{ include "env.fullname" . }}-mongodb
+spec:
+  members: 3
+  type: ReplicaSet
+  version: "6.0.5"
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: {{ .Values.mongodb.username }}
+      db: {{ .Values.mongodb.authenticationDatabase }}
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: {{ include "env.fullname" . }}-mongodb-password
+      roles:
+        - name: clusterAdmin
+          db: {{ .Values.mongodb.authenticationDatabase }}
+        - name: userAdminAnyDatabase
+          db: {{ .Values.mongodb.authenticationDatabase }}
+      scramCredentialsSecretName: my-scram
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: zlib
+  statefulSet:
+    spec:
+      serviceName: mongo
+      template:
+        spec:
+          containers:
+            - name: mongodb
+              image: mongo
+              env:
+                - name: MONGO_INITDB_DATABASE
+                  value: {{ .Values.mongodb.database }}
+                - name: MONGO_INITDB_ROOT_USERNAME
+                  value: admin
+                - name: MONGO_INITDB_ROOT_PASSWORD
+                  value: password
+            - name: mongodb-agent
+              readinessProbe:
+                exec:
+                  command:
+                    - ls
+                enabled: false
+                failureThreshold: 50
+                initialDelaySeconds: 300
+                periodSeconds: 300
+                timeoutSeconds: 300
