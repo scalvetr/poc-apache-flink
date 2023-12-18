@@ -1,12 +1,13 @@
-apiVersion: skaffold/v3
+apiVersion: skaffold/v2beta29
 kind: Config
 metadata:
   name: sample-scenario-datagen
 build:
   artifacts:
-    - image: psample-scenario-datagen
-      buildpacks:
-        builder: paketobuildpacks/builder:base
+    - image: sample-scenario-datagen
+      context: .
+      jib: {}
+
   tagPolicy:
     gitCommit: {}
 deploy:
@@ -16,10 +17,23 @@ deploy:
     releases:
     - name: live-report
       chartPath: helm
-      
-      #wait: true
       setValueTemplates:
-        image.repository: "{{.IMAGE_REPO_sample_scenario_live_report}}"
-        image.tag: "{{.IMAGE_TAG_sample_scenario_live_report}}@{{.IMAGE_DIGEST_sample_scenario_live_report}}"
+        image.repository: "{{.IMAGE_REPO_sample_scenario_datagen}}"
+        image.tag: "{{.IMAGE_TAG_sample_scenario_datagen}}@{{.IMAGE_DIGEST_sample_scenario_datagen}}"
       setValues:
         image.pullPolicy: "IfNotPresent"
+        mongodb.claims.host: sample-scenario-mongodb
+        mongodb.claims.port: 27017
+        mongodb.claims.database: db
+        mongodb.claims.authenticationDatabase: admin
+        mongodb.claims.username: user
+        mongodb.claims.password: password
+        mongodb.policies.host: sample-scenario-mongodb
+        mongodb.policies.port: 27017
+        mongodb.policies.database: db
+        mongodb.policies.authenticationDatabase: admin
+        mongodb.policies.username: user
+        mongodb.policies.password: password
+        kafka.bootstrap_servers: kafka.confluent:9092
+        kafka.schema_registry_url: http://schemaregistry.confluent
+        kafka.topics.customers: customers

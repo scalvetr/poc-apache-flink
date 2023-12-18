@@ -1,4 +1,4 @@
-apiVersion: skaffold/v3
+apiVersion: skaffold/v2beta29
 kind: Config
 metadata:
   name: sample-scenario-env
@@ -16,10 +16,9 @@ deploy:
           image.pullPolicy: "IfNotPresent"
       - name: env
         chartPath: helm
-
-        #wait: true
-        setValueTemplates:
-          image.repository: "{{.IMAGE_REPO_sample_scenario_live_report}}"
-          image.tag: "{{.IMAGE_TAG_sample_scenario_live_report}}@{{.IMAGE_DIGEST_sample_scenario_live_report}}"
         setValues:
-          image.pullPolicy: "IfNotPresent"
+          mongodb.database: db
+          mongodb.authenticationDatabase: admin
+          mongodb.username: user
+          mongodb.password: password
+          kafka.topics.customers: customers

@@ -14,6 +14,7 @@ Sample scenario has the objective to test the different flink apis.
 Install skaffold
 ```shell
 brew install skaffold
+# v2.9.0
 ```
 
 Create Kafka topic
