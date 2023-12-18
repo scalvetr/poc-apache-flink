@@ -10,7 +10,8 @@ deploy:
     releases:
       # https://github.com/mongodb/mongodb-kubernetes-operator/blob/master/README.md
       - name: community-operator
-        remoteChart: mongodb/community-operator
+        repo: https://mongodb.github.io/helm-charts
+        remoteChart: community-operator
         namespace: mongodb
         setValues:
           image.pullPolicy: "IfNotPresent"
