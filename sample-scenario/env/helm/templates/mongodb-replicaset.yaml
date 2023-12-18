@@ -1,7 +1,7 @@
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
-  name: {{ include "env.fullname" . }}-mongodb
+  name: {{ include "sample-scenario.fullname" . }}-mongodb
 spec:
   members: 3
   type: ReplicaSet
@@ -13,7 +13,7 @@ spec:
     - name: {{ .Values.mongodb.username }}
       db: {{ .Values.mongodb.authenticationDatabase }}
       passwordSecretRef: # a reference to the secret that will be used to generate the user's password
-        name: {{ include "env.fullname" . }}-mongodb-password
+        name: {{ include "sample-scenario.fullname" . }}-mongodb-password
       roles:
         - name: clusterAdmin
           db: {{ .Values.mongodb.authenticationDatabase }}
