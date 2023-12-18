@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+@Profile("!test")
 @SpringBootApplication
 public class DatagenApplication implements CommandLineRunner {
     private static Logger log = LoggerFactory
