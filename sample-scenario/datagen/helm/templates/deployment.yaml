@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "live-report.fullname" . }}
+  name: {{ include "datagen.fullname" . }}
 spec:
   selector:
     matchLabels:
-      app: {{ include "live-report.fullname" . }}
+      app: {{ include "datagen.fullname" . }}
   template:
     metadata:
       labels:
-        app: {{ include "live-report.fullname" . }}
+        app: {{ include "datagen.fullname" . }}
     spec:
       containers:
         - name: app
