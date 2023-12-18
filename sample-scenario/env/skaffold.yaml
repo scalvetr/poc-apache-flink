@@ -13,6 +13,7 @@ deploy:
         repo: https://mongodb.github.io/helm-charts
         remoteChart: community-operator
         namespace: mongodb
+        createNamespace: true
         setValues:
           image.pullPolicy: "IfNotPresent"
       - name: env
