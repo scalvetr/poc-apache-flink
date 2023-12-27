@@ -6,6 +6,6 @@ build:
   local:
     concurrency: 0 #builds all artifacts parallely
 requires:
-  - path: ./env
+#  - path: ./env
   - path: ./datagen
   - path: ./live-report

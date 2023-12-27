@@ -17,22 +17,6 @@ brew install skaffold
 # v2.9.0
 ```
 
-Create Kafka topic
-
-```shell
-kubectl run -n default kafka-producer -it \
---image=confluentinc/cp-server:7.5.0 \
---rm=true --restart=Never -- \
-kafka-topics --bootstrap-server kafka.confluent:9092 \
---topic generated-policies --create --partitions 1 --replication-factor 1
-
-kubectl run -n default kafka-producer -it \
---image=confluentinc/cp-server:7.5.0 \
---rm=true --restart=Never -- \
-kafka-topics --bootstrap-server kafka.confluent:9092 \
---topic generated-claims --create --partitions 1 --replication-factor 1
-```
-
 ## Build & Run
 ```shell
 skaffold dev -v trace
@@ -48,11 +32,15 @@ curl -X GET http://localhost:5001/v2/samplescenariodatagen/tags/list
 
 ## Data gen
 
-Loads initial data to the Mongo DB databases (Policies DB and Claims DB). 
+Produces data to `Policies DB`, `Claims DB` and `customers` topic  
+
+## Live report
+
+Run a query on `policies`, `claims` and `customers` topics and saves the result in `Results DB`.
 
 Debug
 ```shell
-export POD_NAME="`kubectl get pods -l app=datagen -l component=jobmanager -o custom-columns=":metadata.name" | tail -n1`";
+export POD_NAME="`kubectl get pods -l app=live-report -l component=jobmanager -o custom-columns=":metadata.name" | tail -n1`";
 
 kubectl exec --stdin --tty \
 ${POD_NAME} \

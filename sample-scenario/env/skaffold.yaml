@@ -16,7 +16,7 @@ deploy:
         createNamespace: true
         setValues:
           image.pullPolicy: "IfNotPresent"
-      - name: env
+      - name: sample-scenario-env
         chartPath: helm
         setValues:
           mongodb.database: db
