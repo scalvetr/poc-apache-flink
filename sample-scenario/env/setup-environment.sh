@@ -4,23 +4,19 @@
 . ../../scripts/02-install_kafka.sh
 . ../../scripts/03-install_flink.sh
 
-# install the mongo community operator
+# mongodb-claimsdb
 # https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
-helm install mongodb-claimsdb oci://registry-1.docker.io/bitnamicharts/mongodb \
+helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb \
 --namespace mongodb --create-namespace \
 --set auth.rootUser=root \
 --set auth.rootPassword=password \
---set auth.usernames={user} \
---set auth.passwords={password} \
---set auth.databases={claimsdb}
+--set auth.usernames="{user,user}" \
+--set auth.passwords="{password,password}" \
+--set auth.databases="{claimsdb,policiesdb}"
 
-helm install mongodb-policiesdb oci://registry-1.docker.io/bitnamicharts/mongodb \
---namespace mongodb --create-namespace \
---set auth.rootUser=root \
---set auth.rootPassword=password \
---set auth.usernames={user} \
---set auth.passwords={password} \
---set auth.databases={policiesdb}
+echo "mongodb created"
+
+kubectl apply -f env/mongo-express.yaml
 
 # see logs
 # kubectl logs -f -l app=mongo -n mongodb

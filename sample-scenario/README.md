@@ -19,6 +19,8 @@ brew install skaffold
 
 ## Build & Run
 ```shell
+env/setup-environment.sh
+
 skaffold dev -v trace
 
 echo "See: http://datagen.default.localtest.me/"
