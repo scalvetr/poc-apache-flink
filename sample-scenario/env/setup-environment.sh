@@ -4,19 +4,26 @@
 . ../../scripts/02-install_kafka.sh
 . ../../scripts/03-install_flink.sh
 
-
-helm repo add community-operator https://mongodb.github.io/helm-charts
-helm repo update
-helm upgrade --install community-operator \
+# install the mongo community operator
+# https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
+helm install mongodb-claimsdb oci://registry-1.docker.io/bitnamicharts/mongodb \
 --namespace mongodb --create-namespace \
---set image.pullPolicy="IfNotPresent" \
-community-operator/community-operator
+--set auth.rootUser=root \
+--set auth.rootPassword=password \
+--set auth.usernames={user} \
+--set auth.passwords={password} \
+--set auth.databases={claimsdb}
 
-helm upgrade --install sample-scenario-env \
---set mongodb.database=db \
---set mongodb.authenticationDatabase=admin \
---set mongodb.username=user \
---set mongodb.password=password \
---set kafka.topics.customers=customers \
-helm
+helm install mongodb-policiesdb oci://registry-1.docker.io/bitnamicharts/mongodb \
+--namespace mongodb --create-namespace \
+--set auth.rootUser=root \
+--set auth.rootPassword=password \
+--set auth.usernames={user} \
+--set auth.passwords={password} \
+--set auth.databases={policiesdb}
 
+# see logs
+# kubectl logs -f -l app=mongo -n mongodb
+kubectl -n mongodb get pods sample-scenario-env-mongodb-mongodb-0
+kubectl -n mongodb logs sample-scenario-env-mongodb-mongodb-0
+kubectl -n mongodb describe pod sample-scenario-env-mongodb-mongodb-0

@@ -8,16 +8,10 @@ build:
 deploy:
   helm:
     releases:
-      # https://github.com/mongodb/mongodb-kubernetes-operator/blob/master/README.md
-      - name: community-operator
-        repo: https://mongodb.github.io/helm-charts
-        remoteChart: community-operator
-        namespace: mongodb
-        createNamespace: true
-        setValues:
-          image.pullPolicy: "IfNotPresent"
       - name: sample-scenario-env
         chartPath: helm
+        namespace: mongodb
+        createNamespace: true
         setValues:
           mongodb.database: db
           mongodb.authenticationDatabase: admin

@@ -1,9 +1,0 @@
-
-mongodb:
-  database: db
-  authenticationDatabase: admin
-  username: user
-  password: password
-kafka:
-  topics:
-    customers: customers
