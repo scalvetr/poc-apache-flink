@@ -18,6 +18,9 @@ echo "mongodb created"
 
 kubectl apply -f env/mongo-express.yaml
 
+kubectl -n mongodb logs -l app=mongodb-express
+kubectl -n mongodb get pods -l app=mongodb-express
+
 # see logs
 # kubectl logs -f -l app=mongo -n mongodb
 kubectl -n mongodb get pods sample-scenario-env-mongodb-mongodb-0
