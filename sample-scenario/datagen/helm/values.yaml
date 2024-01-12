@@ -34,4 +34,7 @@ kafka:
   bootstrap_servers: localhost:9092
   schema_registry_url: http://localhost:8081
   topics:
-    customers: customers
+    customers:
+      name: customers
+      partitions: 1
+      replicas: 1
