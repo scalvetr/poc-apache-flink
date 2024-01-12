@@ -15,25 +15,27 @@ deploy:
 #    flags:
 #      global: [--debug]
     releases:
-    - name: live-report
+    - name: datagen
       chartPath: helm
       setValueTemplates:
         image.repository: "{{.IMAGE_REPO_sample_scenario_datagen}}"
         image.tag: "{{.IMAGE_TAG_sample_scenario_datagen}}@{{.IMAGE_DIGEST_sample_scenario_datagen}}"
       setValues:
         image.pullPolicy: "IfNotPresent"
-        mongodb.claims.host: sample-scenario-mongodb
+        mongodb.claims.host: mongodb.mongodb.svc.cluster.local
         mongodb.claims.port: 27017
-        mongodb.claims.database: db
+        mongodb.claims.database: claimsdb
         mongodb.claims.authenticationDatabase: admin
         mongodb.claims.username: user
         mongodb.claims.password: password
-        mongodb.policies.host: sample-scenario-mongodb
+        mongodb.policies.host: mongodb.mongodb.svc.cluster.local
         mongodb.policies.port: 27017
-        mongodb.policies.database: db
+        mongodb.policies.database: claimsdb
         mongodb.policies.authenticationDatabase: admin
         mongodb.policies.username: user
         mongodb.policies.password: password
-        kafka.bootstrap_servers: kafka.confluent:9092
-        kafka.schema_registry_url: http://schemaregistry.confluent
-        kafka.topics.customers: customers
+        kafka.bootstrap_servers: kafka.confluent.svc.cluster.local:9092
+        kafka.schema_registry_url: http://schemaregistry.confluent.svc.cluster.local
+        kafka.topics.customers.name: customers
+        kafka.topics.customers.partitions: 1
+        kafka.topics.customers.replicas: 1
