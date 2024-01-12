@@ -1,0 +1,15 @@
+@startuml
+
+component datagen
+
+database claims_db as "Claims DB\n<<Mongo Db>>>"
+database policies_db as "Policies DB\n<<Mongo Db>>>"
+
+queue customers_topic as "customers\n<<Kafka Topic>>"
+
+
+datagen --> claims_db
+datagen --> policies_db
+datagen --> customers_topic
+
+@enduml

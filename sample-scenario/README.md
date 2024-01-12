@@ -17,10 +17,22 @@ brew install skaffold
 # v2.9.0
 ```
 
-## Build & Run
+Create initial environment
+
 ```shell
 env/setup-environment.sh
+```
+This command creates the following elements:
+* Claims DB: \<\<Mongo DB>>
+* Policies DB: \<\<Mongo DB>>
 
+## Build & Run
+
+The projecto consists on the following modules that will be automatically installed by `skaffold`:
+* [Datagen](datagen/README.md)
+
+
+```shell
 skaffold dev -v trace
 
 echo "See: http://datagen.default.localtest.me/"
