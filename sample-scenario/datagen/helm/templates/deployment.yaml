@@ -20,34 +20,38 @@ spec:
           env:
             # Claims db
             - name: CLAIMS_DB_HOST
-              value: {{ .Values.mongodb.claims.host }}
+              value: "{{ .Values.mongodb.claims.host }}"
             - name: CLAIMS_DB_PORT
-              value: {{ .Values.mongodb.claims.port }}
+              value: "{{ .Values.mongodb.claims.port }}"
             - name: CLAIMS_DB_DATABASE
-              value: {{ .Values.mongodb.claims.database }}
+              value: "{{ .Values.mongodb.claims.database }}"
             - name: CLAIMS_DB_AUTH_DATABASE
-              value: {{ .Values.mongodb.claims.authenticationDatabase }}
+              value: "{{ .Values.mongodb.claims.authenticationDatabase }}"
             - name: CLAIMS_DB_USERNAME
-              value: {{ .Values.mongodb.claims.username }}
+              value: "{{ .Values.mongodb.claims.username }}"
             - name: CLAIMS_DB_PASSWORD
-              value: {{ .Values.mongodb.claims.password }}
+              value: "{{ .Values.mongodb.claims.password }}"
             # Policies db
             - name: POLICIES_DB_HOST
-              value: {{ .Values.mongodb.policies.host }}
+              value: "{{ .Values.mongodb.policies.host }}"
             - name: POLICIES_DB_PORT
-              value: {{ .Values.mongodb.policies.port }}
+              value: "{{ .Values.mongodb.policies.port }}"
             - name: POLICIES_DB_DATABASE
-              value: {{ .Values.mongodb.policies.database }}
+              value: "{{ .Values.mongodb.policies.database }}"
             - name: POLICIES_DB_AUTH_DATABASE
-              value: {{ .Values.mongodb.policies.authenticationDatabase }}
+              value: "{{ .Values.mongodb.policies.authenticationDatabase }}"
             - name: POLICIES_DB_USERNAME
-              value: {{ .Values.mongodb.policies.username }}
+              value: "{{ .Values.mongodb.policies.username }}"
             - name: POLICIES_DB_PASSWORD
-              value: {{ .Values.mongodb.policies.password }}
+              value: "{{ .Values.mongodb.policies.password }}"
             # Customers kafka topic
             - name: KAFKA_BOOTSTRAP_SERVERS
-              value: {{ .Values.kafka.bootstrap_servers }}
+              value: "{{ .Values.kafka.bootstrap_servers }}"
             - name: KAFKA_SCHEMA_REGISTRY
-              value: {{ .Values.kafka.schema_registry_url }}
-            - name: KAFKA_CUSTOMERS_TOPIC
-              value: {{ .Values.kafka.topics.customers }}
+              value: "{{ .Values.kafka.schema_registry_url }}"
+            - name: KAFKA_CUSTOMERS_TOPIC_NAME
+              value: "{{ .Values.kafka.topics.customers.name }}"
+            - name: KAFKA_CUSTOMERS_TOPIC_PARTITIONS
+              value: "{{ .Values.kafka.topics.customers.partitions }}"
+            - name: KAFKA_CUSTOMERS_TOPIC_REPLICAS
+              value: "{{ .Values.kafka.topics.customers.replicas }}"

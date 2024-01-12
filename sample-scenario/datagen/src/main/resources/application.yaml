@@ -25,7 +25,10 @@ spring:
 
 app:
   kafka:
-    topic: ${KAFKA_CUSTOMERS_TOPIC:customers}
+    topic: ${KAFKA_CUSTOMERS_TOPIC_NAME:customers}
+    partitions: ${KAFKA_CUSTOMERS_TOPIC_PARTITIONS:1}
+    replicas: ${KAFKA_CUSTOMERS_TOPIC_REPLICAS:1}
+
 
 logging:
   level:
