@@ -25,13 +25,13 @@ deploy:
         mongodb.claims.host: mongodb.mongodb.svc.cluster.local
         mongodb.claims.port: 27017
         mongodb.claims.database: claimsdb
-        mongodb.claims.authenticationDatabase: admin
+        mongodb.claims.authenticationDatabase: claimsdb
         mongodb.claims.username: user
         mongodb.claims.password: password
         mongodb.policies.host: mongodb.mongodb.svc.cluster.local
         mongodb.policies.port: 27017
-        mongodb.policies.database: claimsdb
-        mongodb.policies.authenticationDatabase: admin
+        mongodb.policies.database: policiesdb
+        mongodb.policies.authenticationDatabase: policiesdb
         mongodb.policies.username: user
         mongodb.policies.password: password
         kafka.bootstrap_servers: kafka.confluent.svc.cluster.local:9092
