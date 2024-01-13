@@ -35,7 +35,7 @@ deploy:
         mongodb.policies.username: user
         mongodb.policies.password: password
         kafka.bootstrap_servers: kafka.confluent.svc.cluster.local:9092
-        kafka.schema_registry_url: http://schemaregistry.confluent.svc.cluster.local
+        kafka.schema_registry_url: http://schemaregistry.confluent.svc.cluster.local:8081
         kafka.topics.customers.name: customers
         kafka.topics.customers.partitions: 1
         kafka.topics.customers.replicas: 1
