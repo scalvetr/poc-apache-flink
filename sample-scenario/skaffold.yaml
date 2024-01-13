@@ -8,4 +8,4 @@ build:
 requires:
 #  - path: ./env
   - path: ./datagen
-  - path: ./live-report
+#  - path: ./live-report
