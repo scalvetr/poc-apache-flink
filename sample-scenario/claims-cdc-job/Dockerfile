@@ -18,4 +18,4 @@ EXPOSE 8081
 ADD target/plugins /opt/flink/plugins
 
 RUN mkdir /opt/flink/usrlib
-ADD target/extract-claims-job-*.jar /opt/flink/usrlib/flink-job.jar
+ADD target/claims-cdc-job-*.jar /opt/flink/usrlib/flink-job.jar

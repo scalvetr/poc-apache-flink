@@ -1,7 +1,7 @@
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
-  name: {{ include "extract-claims-job.fullname" . }}
+  name: {{ include "claims-cdc-job.fullname" . }}
 spec:
   image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
   imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -23,7 +23,7 @@ spec:
     apiVersion: v1
     kind: Pod
     metadata:
-      name: {{ include "extract-claims-job.fullname" . }}
+      name: {{ include "claims-cdc-job.fullname" . }}
     spec:
       containers:
         # Do not change the main container name
@@ -35,7 +35,7 @@ spec:
       volumes:
         - name: flink-usrconfig
           configMap:
-            name: {{ include "extract-claims-job.fullname" . }}-config
+            name: {{ include "claims-cdc-job.fullname" . }}-config
   jobManager:
     resource:
       memory: "2048m"
