@@ -8,4 +8,5 @@ build:
 requires:
 #  - path: ./env
   - path: ./datagen
+  - path: ./extract-claims-job
 #  - path: ./live-report

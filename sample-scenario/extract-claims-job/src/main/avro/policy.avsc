@@ -1,0 +1,24 @@
+{
+  "namespace": "com.github.scalvetr.poc.flink.policy.model",
+  "name": "Policy",
+  "type": "record",
+  "fields": [
+    {
+      "name": "policyId",
+      "type": "string"
+    },
+    {
+      "name": "customerId",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "creationTimestamp",
+      "type": "long",
+      "logicalType": "timestamp-millis"
+    }
+  ]
+}

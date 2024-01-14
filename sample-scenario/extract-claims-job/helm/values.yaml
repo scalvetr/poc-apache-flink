@@ -1,6 +1,6 @@
 
 image:
-  repository: localhost:5001/sample-scenario-cdc
+  repository: localhost:5001/sample-scenario-extract-claims-job
   pullPolicy: "IfNotPresent"
 
 

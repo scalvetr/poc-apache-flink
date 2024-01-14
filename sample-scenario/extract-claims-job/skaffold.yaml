@@ -1,14 +1,14 @@
 apiVersion: skaffold/v3
 kind: Config
 metadata:
-  name: sample-scenario-cdc
+  name: sample-scenario-extract-claims-job
 build:
 #  insecureRegistries:
 #    - localhost:5001
   local:
     push: true
   artifacts:
-    - image: sample-scenario-cdc
+    - image: sample-scenario-extract-claims-job
       #docker:
       #  dockerfile: Dockerfile
       custom:
@@ -26,7 +26,7 @@ deploy:
 #    flags:
 #      global: [--debug]
     releases:
-    - name: cdc
+    - name: extract-claims-job
       chartPath: helm
       
       #wait: true

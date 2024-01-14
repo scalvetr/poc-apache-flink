@@ -1,0 +1,28 @@
+{
+  "namespace": "com.github.scalvetr.poc.flink.claims.model",
+  "name": "Claim",
+  "type": "record",
+  "fields": [
+    {
+      "name": "claimId",
+      "type": "string"
+    },
+    {
+      "name": "customerId",
+      "type": "string"
+    },
+    {
+      "name": "policyId",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "creationTimestamp",
+      "type": "long",
+      "logicalType": "timestamp-millis"
+    }
+  ]
+}
