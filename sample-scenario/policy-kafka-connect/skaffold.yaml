@@ -1,0 +1,22 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: sample-scenario-policy-kafka-connect
+build:
+#  insecureRegistries:
+#    - localhost:5001
+  local:
+    push: true
+deploy:
+  helm:
+#    flags:
+#      global: [--debug]
+    releases:
+    - name: policy-kafka-connect
+      chartPath: helm
+      setValues:
+        kafka.bootstrap_servers: kafka.confluent.svc.cluster.local:9092
+        kafka.schema_registry_url: http://schemaregistry.confluent.svc.cluster.local:8081
+        kafka.topics.customers.name: customers
+        kafka.topics.customers.partitions: 1
+        kafka.topics.customers.replicas: 1

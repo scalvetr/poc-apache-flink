@@ -8,5 +8,6 @@ build:
 requires:
 #  - path: ./env
   - path: ./datagen
-  - path: ./extract-claims-job
+  - path: ./claims-cdc-job
+  - path: ./policy-kafka-connect
 #  - path: ./live-report

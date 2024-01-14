@@ -1,0 +1,41 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+  namespace: {{ .Values.kafka_connect.namespace }}
+spec:
+  replicas: 1
+  image:
+    application: confluentinc/cp-server-connect:7.5.0
+    init: confluentinc/confluent-init-container:2.7.0
+  build:
+    type: onDemand
+    onDemand:
+      plugins:
+        {{- toYaml .Values.kafka_connect.plugins | nindent 8 }}
+      storageLimit: 4G
+  configOverrides:
+    server:
+      - group.id={{ .Values.kafka_connect.group_id }}
+      - offset.storage.topic={{ .Values.kafka_connect.offset_storage.topic_name }}
+      - offset.storage.replication.factor={{ .Values.kafka_connect.offset_storage.topic_replication_factor }}
+      - config.storage.topic={{ .Values.kafka_connect.config_storage.topic_name }}
+      - config.storage.replication.factor={{ .Values.kafka_connect.config_storage.topic_replication_factor }}
+      - status.storage.topic={{ .Values.kafka_connect.status_storage.topic_name }}
+      - status.storage.replication.factor={{ .Values.kafka_connect.status_storage.topic_replication_factor }}
+  dependencies:
+    kafka:
+      bootstrapEndpoint: {{ .Values.kafka.bootstrapEndpoint }}
+      authentication:
+        type: {{ .Values.kafka.authentication.type }}
+        jaasConfigPassThrough:
+          secretRef: {{ .Values.kafka.authentication.secret }}
+      tls:
+        enabled: true
+        ignoreTrustStoreConfig: true
+    schemaRegistry:
+      url: {{ .Values.kafka_connect.schema_registry.url }}
+      authentication:
+        type: {{ .Values.kafka_connect.schema_registry.authentication.type }}
+        basic:
+          secretRef: {{ .Values.kafka_connect.schema_registry.authentication.secret }}

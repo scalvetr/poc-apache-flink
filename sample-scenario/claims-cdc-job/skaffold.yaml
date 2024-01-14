@@ -31,7 +31,7 @@ deploy:
       
       #wait: true
       setValueTemplates:
-        image.repository: "{{.IMAGE_REPO_sample_scenario_live_report}}"
-        image.tag: "{{.IMAGE_TAG_sample_scenario_live_report}}@{{.IMAGE_DIGEST_sample_scenario_live_report}}"
+        image.repository: "{{.IMAGE_REPO_sample_scenario_claims_cdc_job}}"
+        image.tag: "{{.IMAGE_TAG_sample_scenario_claims_cdc_job}}@{{.IMAGE_DIGEST_sample_scenario_claims_cdc_job}}"
       setValues:
         image.pullPolicy: "IfNotPresent"

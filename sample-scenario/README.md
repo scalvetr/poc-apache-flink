@@ -54,9 +54,13 @@ Kafka UI: http://kafka-ui.confluent.localtest.me
 
 Produces data to `Policies DB`, `Claims DB` and `customers` topic.
 
-## Flink CDC
+## Claims CDC Job
 
-Flink job that reads from `Policies DB` and `Claims DB` and produces to `policies` and `claims` topics.
+Flink job that reads from `Claims DB` and produces to `claims` topic.
+
+## Policy Kafka Connect
+
+Kafka Connect job that reads from `Policies DB` and produces to `policies` topics.
 
 ## Live report
 
