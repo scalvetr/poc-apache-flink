@@ -37,12 +37,11 @@ kafka_connect:
 kafka:
   bootstrap_servers: localhost:9092
   schema_registry_url: http://localhost:8081
-  authentication:
-    type: plain
-    secret: cloud-plain
-
 output:
-  topic: claims
+  topic: policies
+  schema:
+    namespace: com.policies
+
 mongodb:
   host: localhost
   port: 27017

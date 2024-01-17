@@ -3,8 +3,7 @@ image:
   repository: localhost:5001/sample-scenario-claims-cdc-job
   pullPolicy: "IfNotPresent"
 
-output:
-  topic: claims
+
 mongodb:
   host: localhost
   port: 27017
@@ -13,6 +12,14 @@ mongodb:
   username: user
   password: password
   collection: claims
+kafka:
+  bootstrap_servers: localhost:9092
+  schema_registry_url: http://localhost:8081
+output:
+  topic: claims
+  schema:
+    namespace: com.claims
+
 
 serviceAccount:
   # Specifies whether a service account should be created

@@ -17,9 +17,8 @@ deploy:
       setValues:
         kafka.bootstrap_servers: kafka.confluent.svc.cluster.local:9092
         kafka.schema_registry_url: http://schemaregistry.confluent.svc.cluster.local:8081
-        kafka.topics.customers.name: customers
-        kafka.topics.customers.partitions: 1
-        kafka.topics.customers.replicas: 1
+        output.schema:
+          namespace: com.github.scalvetr.claims
         mongodb.host: mongodb.mongodb.svc.cluster.local
         mongodb.port: 27017
         mongodb.authDatabase: policiesdb
