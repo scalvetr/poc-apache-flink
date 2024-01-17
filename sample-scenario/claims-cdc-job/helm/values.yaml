@@ -3,6 +3,15 @@ image:
   repository: localhost:5001/sample-scenario-claims-cdc-job
   pullPolicy: "IfNotPresent"
 
+output:
+  topic: claims
+mongodb:
+  host: localhost
+  port: 27017
+  database: db
+  username: user
+  password: password
+  collection: claims
 
 serviceAccount:
   # Specifies whether a service account should be created

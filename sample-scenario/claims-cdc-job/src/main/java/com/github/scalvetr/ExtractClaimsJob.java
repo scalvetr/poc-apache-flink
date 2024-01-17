@@ -53,7 +53,6 @@ public class ExtractClaimsJob {
         final KafkaUtils kafkaSinkUtils = new KafkaUtils(kafkaSinkProperties);
 
         String outputTopic = jobProperties.getProperty("output.topic");
-        String group = jobProperties.getProperty("group_id");
 
         String database = jobProperties.getProperty("mongodb.database");
         String collection = jobProperties.getProperty("mongodb.collection");

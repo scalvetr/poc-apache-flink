@@ -35,3 +35,9 @@ deploy:
         image.tag: "{{.IMAGE_TAG_sample_scenario_claims_cdc_job}}@{{.IMAGE_DIGEST_sample_scenario_claims_cdc_job}}"
       setValues:
         image.pullPolicy: "IfNotPresent"
+        mongodb.host: mongodb.mongodb.svc.cluster.local
+        mongodb.port: 27017
+        mongodb.database: claimsdb
+        mongodb.collection: claims
+        mongodb.username: user
+        mongodb.password: password
