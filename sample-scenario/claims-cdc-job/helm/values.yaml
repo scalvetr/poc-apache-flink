@@ -9,6 +9,7 @@ mongodb:
   host: localhost
   port: 27017
   database: db
+  authDatabase: admin
   username: user
   password: password
   collection: claims

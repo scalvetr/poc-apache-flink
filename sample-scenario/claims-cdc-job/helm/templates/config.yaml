@@ -6,6 +6,7 @@ data:
   job.properties: |
     output.topic={ { .Values.output.topic } }
   kafka-sink.properties: |
+    mongodb.authDatabase={ { .Values.mongodb.authDatabase } }
     mongodb.database={ { .Values.mongodb.database } }
     mongodb.collection={ { .Values.mongodb.collection } }
     mongodb.username={ { .Values.mongodb.username } }
