@@ -20,3 +20,10 @@ deploy:
         kafka.topics.customers.name: customers
         kafka.topics.customers.partitions: 1
         kafka.topics.customers.replicas: 1
+        mongodb.host: mongodb.mongodb.svc.cluster.local
+        mongodb.port: 27017
+        mongodb.authDatabase: policiesdb
+        mongodb.database: policiesdb
+        mongodb.collection: policies
+        mongodb.username: user
+        mongodb.password: password

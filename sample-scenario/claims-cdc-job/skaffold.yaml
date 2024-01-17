@@ -37,6 +37,7 @@ deploy:
         image.pullPolicy: "IfNotPresent"
         mongodb.host: mongodb.mongodb.svc.cluster.local
         mongodb.port: 27017
+        mongodb.authDatabase: claimsdb
         mongodb.database: claimsdb
         mongodb.collection: claims
         mongodb.username: user
