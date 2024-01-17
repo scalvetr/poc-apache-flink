@@ -1,0 +1,37 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: {{ include "policy-kafka-connect.fullname" . }}-mongodb-connector
+spec:
+  name: {{ include "policy-kafka-connect.fullname" . }}-mongodb-connector
+  taskMax: 1
+  class: com.mongodb.kafka.connect.MongoSourceConnector
+  configs:
+    key.converter: "org.apache.kafka.connect.storage.StringConverter"
+    value.converter: "io.confluent.connect.avro.AvroConverter"
+    transforms: "valueToKey, extractKey"
+    transforms.valueToKey.type: "org.apache.kafka.connect.transforms.ValueToKey"
+    transforms.valueToKey.fields: "code"
+    transforms.extractKey.type: "org.apache.kafka.connect.transforms.ExtractField$Key"
+    transforms.extractKey.field: "code"
+    connection.uri: "mongodb://{{ .Values.mongodb.username }}:{{ .Values.mongodb.password }}@{{ .Values.mongodb.host }}:{{ .Values.mongodb.port }}?authSource={{ .Values.mongodb.authDatabase }}"
+    database: "{{ .Values.mongodb.database }}"
+    collection: "{{ .Values.mongodb.collection }}"
+    publish.full.document.only: "true"
+    topic.namespace.map: "{\"catalog-db.products\":\"dev.lab.catalog.products\"}"
+    output.format.value: "schema"
+    output.schema.value: "{\"namespace\":\"com.allianz.ms.catalog\",\"name\":\"ProductEvent\",\"type\":\"record\",\"fields\":[{\"name\":\"code\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"shortDescription\",\"type\":\"string\"},{\"name\":\"category\",\"type\":\"string\"},{\"name\":\"price\",\"type\":{\"type\":\"record\",\"name\":\"MonetaryAmount\",\"fields\":[{\"name\":\"currency\",\"type\":\"string\"},{\"name\":\"number\",\"type\":\"double\"}]}},{\"name\":\"shippingDimensions\",\"type\":{\"type\":\"record\",\"name\":\"Dimensions\",\"fields\":[{\"name\":\"length\",\"type\":\"string\"},{\"name\":\"width\",\"type\":\"string\"},{\"name\":\"height\",\"type\":\"string\"},{\"name\":\"weight\",\"type\":\"string\"}]}}]}"
+    value.converter.schema.registry.url: "http://schemaregistry-0-internal:8081"
+    value.converter.schema.registry.basic.auth.user.info: "csp:xxx"
+    value.converter.basic.auth.credentials.source: "USER_INFO"
+    #basic.auth.user.info: "${file:/mnt/secrets/creds-schemaRegistry-basic/custom.properties:connector-username}"
+    value.converter.schemas.enable: "true"
+    startup.mode: "copy_existing"
+    #errors.tolerance: all
+
+  restartPolicy:
+    type: OnFailure
+    maxRetry: 10
+  connectClusterRef:
+    name: connect
+    namespace: confluent

@@ -40,3 +40,14 @@ kafka:
   authentication:
     type: plain
     secret: cloud-plain
+
+output:
+  topic: claims
+mongodb:
+  host: localhost
+  port: 27017
+  database: db
+  authDatabase: admin
+  username: user
+  password: password
+  collection: claims
