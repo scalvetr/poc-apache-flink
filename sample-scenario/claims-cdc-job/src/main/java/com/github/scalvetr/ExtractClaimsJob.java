@@ -19,10 +19,12 @@ package com.github.scalvetr;
 
 import com.github.scalvetr.poc.flink.claims.model.Claim;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.typeutils.TupleTypeInfo;
 import org.apache.flink.configuration.MemorySize;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.mongodb.source.MongoSource;
@@ -61,9 +63,16 @@ public class ExtractClaimsJob {
         String password = jobProperties.getProperty("mongodb.password");
         String host = jobProperties.getProperty("mongodb.host");
         String port = jobProperties.getProperty("mongodb.port");
+        LOG.info("config -> sink.brokers={}", kafkaSinkProperties.getProperty("bootstrap.servers"));
+        LOG.info("config -> outputTopic={}", outputTopic);
+        LOG.info("config -> mongodb.database={}", database);
+        LOG.info("config -> mongodb.authDatabase={}", authDatabase);
+        LOG.info("config -> mongodb.collection={}", collection);
+        LOG.info("config -> mongodb.host={}", host);
+        LOG.info("config -> mongodb.port={}", port);
 
         MongoSource<Claim> source = MongoSource.<Claim>builder()
-                .setUri(String.format("mongodb://%s:%s@%s:%s?authSource=%s", username, password, host, port, authDatabase))
+                .setUri(String.format("mongodb://%s:%s@%s:%s/?authSource=%s", username, password, host, port, authDatabase))
                 .setDatabase(database)
                 .setCollection(collection)
                 .setFetchSize(2048)
@@ -96,10 +105,12 @@ public class ExtractClaimsJob {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 
-        DataStream<Tuple2<String, Claim>> claims = env.fromSource(source, WatermarkStrategy.noWatermarks(), "MongoDB-Source")
-                .map(claim -> new Tuple2(claim.getClaimId(), claim));
+        DataStream<Claim> input = env.fromSource(source, WatermarkStrategy.noWatermarks(), "MongoDB-Source");
 
-        claims.sinkTo(sink);
+        // Convert to a key - value tuple
+        DataStream<Tuple2<String, Claim>> mapped = input.map(claim -> new Tuple2(claim.getClaimId(), claim));
+
+        mapped.sinkTo(sink);
 
 
         //env.enableCheckpointing(5000);

@@ -30,7 +30,7 @@ under the License.
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--flink.version>1.18.0</flink.version-->
         <flink.version>1.17.1</flink.version>
-        <flink-connector-mongodb.version>1.0.1-1.17</flink-connector-mongodb.version>
+        <flink-connector-mongodb.version>1.0.2-1.17</flink-connector-mongodb.version>
         <java.version>1.8</java.version>
         <avro.version>1.11.3</avro.version>
         <slf4j.version>1.7.36</slf4j.version>
@@ -189,7 +189,7 @@ under the License.
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <!-- Replace this with the main class of your job -->
-                                    <mainClass>com.github.scalvetr.RunJob</mainClass>
+                                    <mainClass>com.github.scalvetr.ExtractClaimsJob</mainClass>
                                 </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>

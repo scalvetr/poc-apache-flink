@@ -48,3 +48,6 @@ spec:
     jarURI: local:///opt/flink/usrlib/flink-job.jar
     parallelism: 2
     upgradeMode: stateless
+    args:
+      - /opt/flink/usrconfig/job.properties
+      - /opt/flink/usrconfig/kafka.properties

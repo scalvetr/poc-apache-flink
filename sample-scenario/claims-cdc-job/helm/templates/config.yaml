@@ -4,13 +4,13 @@ metadata:
   name: {{ include "claims-cdc-job.fullname" . }}-config
 data:
   job.properties: |
-    output.topic={ { .Values.output.topic } }
-    mongodb.authDatabase={ { .Values.mongodb.authDatabase } }
-    mongodb.database={ { .Values.mongodb.database } }
-    mongodb.collection={ { .Values.mongodb.collection } }
-    mongodb.username={ { .Values.mongodb.username } }
-    mongodb.password={ { .Values.mongodb.password } }
-    mongodb.host={ { .Values.mongodb.host } }
-    mongodb.port={ { .Values.mongodb.port } }
-  kafka-sink.properties: |
-    bootstrap.servers={ { .Values.kafka.bootstrap_servers } }
+    output.topic={{ .Values.output.topic }}
+    mongodb.authDatabase={{ .Values.mongodb.authDatabase }}
+    mongodb.database={{ .Values.mongodb.database }}
+    mongodb.collection={{ .Values.mongodb.collection }}
+    mongodb.username={{ .Values.mongodb.username }}
+    mongodb.password={{ .Values.mongodb.password }}
+    mongodb.host={{ .Values.mongodb.host }}
+    mongodb.port={{ .Values.mongodb.port }}
+  kafka.properties: |
+    bootstrap.servers={{ .Values.kafka.bootstrap_servers }}
