@@ -21,6 +21,9 @@ build:
           ./mvnw clean package
           docker build . -f Dockerfile --tag=$IMAGE
           docker image push $IMAGE
+        dependencies:
+          ignore:
+            - target
 deploy:
   helm:
 #    flags:
