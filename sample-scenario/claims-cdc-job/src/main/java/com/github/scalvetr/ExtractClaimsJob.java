@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.util.Properties;
 
 /**
@@ -71,6 +72,7 @@ public class ExtractClaimsJob {
         LOG.info("config -> mongodb.host={}", host);
         LOG.info("config -> mongodb.port={}", port);
 
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         MongoSource<Claim> source = MongoSource.<Claim>builder()
                 .setUri(String.format("mongodb://%s:%s@%s:%s/?authSource=%s", username, password, host, port, authDatabase))
                 .setDatabase(database)
@@ -94,32 +96,33 @@ public class ExtractClaimsJob {
 
                     @Override
                     public TypeInformation<Claim> getProducedType() {
-                        return BasicTypeInfo.getInfoFor(Claim.class);
+                        return BasicTypeInfo.of(Claim.class);
                     }
                 })
                 .build();
+        DataStream<Claim> input = env.fromSource(source, WatermarkStrategy.noWatermarks(), "MongoDB-Source");
+
         final KafkaSink<Tuple2<String, Claim>> sink = kafkaSinkUtils.buildKafkaSink(String.class, Claim.class,
                 new SimpleStringSchema(),
                 AvroSerializationSchema.forSpecific(Claim.class), outputTopic);
-
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-
-        DataStream<Claim> input = env.fromSource(source, WatermarkStrategy.noWatermarks(), "MongoDB-Source");
-
         // Convert to a key - value tuple
-        DataStream<Tuple2<String, Claim>> mapped = input.map(claim -> new Tuple2(claim.getClaimId(), claim));
+        DataStream<Tuple2<String, Claim>> mapped = input.map(new MapFunction<Claim, Tuple2<String, Claim>>() {
+            @Override
+            public Tuple2<String, Claim> map(Claim claim) throws Exception {
+                return new Tuple2(claim.getClaimId(), claim);
+            }
+        });
 
         mapped.sinkTo(sink);
 
-
+        env.execute("MongoDB as a Source Sink to Kafka");
         //env.enableCheckpointing(5000);
     }
 
     private static Properties loadProperties(String[] args, int i, String defaultValue) throws Exception {
         Properties props = new Properties();
         if (args.length >= i + 1) {
-            props.load(new FileInputStream(new File(args[i])));
+            props.load(Files.newInputStream(new File(args[i]).toPath()));
         } else {
             props.load(ExtractClaimsJob.class.getClassLoader().getResourceAsStream(defaultValue));
         }
