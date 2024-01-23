@@ -25,17 +25,19 @@ spec:
       - status.storage.replication.factor={{ .Values.kafka_connect.status_storage.topic_replication_factor }}
   dependencies:
     kafka:
-      bootstrapEndpoint: {{ .Values.kafka.bootstrapEndpoint }}
+      bootstrapEndpoint: {{ .Values.kafka.bootstrap_servers }}
+      {{- if .Values.kafka.authentication.enabled -}}
       authentication:
         type: {{ .Values.kafka.authentication.type }}
         jaasConfigPassThrough:
           secretRef: {{ .Values.kafka.authentication.secret }}
+      {{- end }}
       tls:
         enabled: true
         ignoreTrustStoreConfig: true
     schemaRegistry:
-      url: {{ .Values.kafka_connect.schema_registry.url }}
+      url: {{ .Values.schema_registry.url }}
       authentication:
-        type: {{ .Values.kafka_connect.schema_registry.authentication.type }}
+        type: {{ .Values.schema_registry.authentication.type }}
         basic:
-          secretRef: {{ .Values.kafka_connect.schema_registry.authentication.secret }}
+          secretRef: {{ .Values.schema_registry.authentication.secret }}

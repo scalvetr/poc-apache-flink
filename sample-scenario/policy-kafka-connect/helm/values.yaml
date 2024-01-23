@@ -9,6 +9,10 @@ schema_registry:
     topic_name: dev.lab.schemaregistry.schemas
     topic_replication_factor: 3
     group_id: cg.dev.lab.schemaregistry.kafkastore
+  url: http://schemaregistry-0-internal:8081
+  authentication:
+    type: basic
+    secret: cloud-sr-access
 
 kafka_connect:
   namespace: confluent
@@ -22,11 +26,6 @@ kafka_connect:
   status_storage:
     topic_name: dev.lab.connect-status
     topic_replication_factor: 3
-  schema_registry:
-    url: http://schemaregistry-0-internal:8081
-    authentication:
-      type: basic
-      secret: cloud-sr-access
   plugins:
     locationType: confluentHub
     confluentHub:
@@ -37,6 +36,11 @@ kafka_connect:
 kafka:
   bootstrap_servers: localhost:9092
   schema_registry_url: http://localhost:8081
+  authentication:
+    enabled: false
+    type: plain
+    secret: cloud-plain
+
 output:
   topic: policies
   schema:
