@@ -49,6 +49,8 @@ URLs:
 Mongo Express: http://express.mongodb.localtest.me
 Kafka UI: http://kafka-ui.confluent.localtest.me
 
+Claims CDC Job: http://claims-cdc-job.default.localtest.me
+
 
 ## Data gen
 
