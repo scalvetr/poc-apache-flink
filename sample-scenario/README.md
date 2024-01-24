@@ -64,6 +64,7 @@ Flink job that reads from `Claims DB` and produces to `claims` topic.
 
 Kafka Connect job that reads from `Policies DB` and produces to `policies` topics.
 
+
 ## Live report
 
 FlinkSQL job that runs a query on `policies`, `claims` and `customers` topics and saves the result in `Results DB`.

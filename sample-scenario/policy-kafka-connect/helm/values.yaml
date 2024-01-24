@@ -19,14 +19,19 @@ kafka_connect:
   namespace: confluent
   group_id: connect-cg.dev.lab.catalog
   offset_storage:
+    create: true
     topic_name: dev.lab.connect-offsets
-    topic_replication_factor: 3
+    replication_factor: 3
+    partitions: 5
   config_storage:
+    create: true
     topic_name: dev.lab.connect-configs
-    topic_replication_factor: 3
+    replication_factor: 3
   status_storage:
+    create: true
     topic_name: dev.lab.connect-status
-    topic_replication_factor: 3
+    replication_factor: 3
+    partitions: 5
   plugins:
     locationType: confluentHub
     confluentHub:
@@ -36,6 +41,7 @@ kafka_connect:
 
 kafka:
   bootstrap_servers: localhost:9092
+  tls_enabled: false
   schema_registry_url: http://localhost:8081
   authentication:
     enabled: false

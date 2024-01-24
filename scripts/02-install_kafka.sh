@@ -46,7 +46,7 @@ metadata:
   name: kafka
   namespace: confluent
 spec:
-  replicas: 1
+  replicas: 3
   image:
     application: confluentinc/cp-server:7.5.0
     init: confluentinc/confluent-init-container:2.7.0

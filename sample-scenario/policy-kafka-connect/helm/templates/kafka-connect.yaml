@@ -18,11 +18,13 @@ spec:
     server:
       - group.id={{ .Values.kafka_connect.group_id }}
       - offset.storage.topic={{ .Values.kafka_connect.offset_storage.topic_name }}
-      - offset.storage.replication.factor={{ .Values.kafka_connect.offset_storage.topic_replication_factor }}
+      - offset.storage.replication.factor={{ .Values.kafka_connect.offset_storage.replication_factor }}
+      - offset.storage.partitions={{ .Values.kafka_connect.offset_storage.partitions }}
       - config.storage.topic={{ .Values.kafka_connect.config_storage.topic_name }}
-      - config.storage.replication.factor={{ .Values.kafka_connect.config_storage.topic_replication_factor }}
+      - config.storage.replication.factor={{ .Values.kafka_connect.config_storage.replication_factor }}
       - status.storage.topic={{ .Values.kafka_connect.status_storage.topic_name }}
-      - status.storage.replication.factor={{ .Values.kafka_connect.status_storage.topic_replication_factor }}
+      - status.storage.replication.factor={{ .Values.kafka_connect.status_storage.replication_factor }}
+      - status.storage.partitions={{ .Values.kafka_connect.status_storage.partitions }}
   dependencies:
     kafka:
       bootstrapEndpoint: {{ .Values.kafka.bootstrap_servers }}
@@ -33,7 +35,7 @@ spec:
           secretRef: {{ .Values.kafka.authentication.secret }}
       {{- end }}
       tls:
-        enabled: true
+        enabled: {{ .Values.kafka.tls_enabled }}
         ignoreTrustStoreConfig: true
     schemaRegistry:
       url: {{ .Values.schema_registry.url }}
