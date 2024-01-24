@@ -37,7 +37,9 @@ spec:
         ignoreTrustStoreConfig: true
     schemaRegistry:
       url: {{ .Values.schema_registry.url }}
+      {{- if .Values.schema_registry.authentication.enabled -}}
       authentication:
         type: {{ .Values.schema_registry.authentication.type }}
         basic:
           secretRef: {{ .Values.schema_registry.authentication.secret }}
+      {{- end }}

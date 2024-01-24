@@ -11,6 +11,7 @@ schema_registry:
     group_id: cg.dev.lab.schemaregistry.kafkastore
   url: http://schemaregistry-0-internal:8081
   authentication:
+    enabled: false
     type: basic
     secret: cloud-sr-access
 
