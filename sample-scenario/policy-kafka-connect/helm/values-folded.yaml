@@ -50,7 +50,32 @@ kafka:
 
 output:
   topic: policies
-  schema: "{\"namespace\": \"com.github.scalvetr.poc.flink.policy.model\",\"name\": \"Policy\",\"type\": \"record\",\"fields\": [{\"name\": \"policyId\",\"type\": \"string\"},{\"name\": \"customerId\",\"type\": \"string\"},{\"name\": \"title\",\"type\": \"string\"},{\"name\": \"creationTimestamp\",\"type\": \"long\",\"logicalType\": \"timestamp-millis\"}]}"
+  # https://helm.sh/docs/chart_template_guide/yaml_techniques/#folded-multi-line-strings
+  schema: >
+    {
+      "namespace": "com.github.scalvetr.poc.flink.policy.model",
+      "name": "Policy",
+      "type": "record",
+      "fields": [
+        {
+          "name": "policyId",
+          "type": "string"
+        },
+        {
+          "name": "customerId",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "creationTimestamp",
+          "type": "long",
+          "logicalType": "timestamp-millis"
+        }
+      ]
+    }
 
 mongodb:
   host: localhost
