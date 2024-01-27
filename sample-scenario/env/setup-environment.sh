@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. ../../scripts/01-install_k8s.sh
-. ../../scripts/02-install_kafka.sh
-. ../../scripts/03-install_flink.sh
+. ../scripts/01-install_k8s.sh
+. ../scripts/02-install_kafka.sh
+. ../scripts/03-install_flink.sh
 
 # mongodb-claimsdb
 # https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
@@ -23,6 +23,6 @@ kubectl -n mongodb get pods -l app=mongodb-express
 
 # see logs
 # kubectl logs -f -l app=mongo -n mongodb
-kubectl -n mongodb get pods sample-scenario-env-mongodb-mongodb-0
-kubectl -n mongodb logs sample-scenario-env-mongodb-mongodb-0
-kubectl -n mongodb describe pod sample-scenario-env-mongodb-mongodb-0
+kubectl -n mongodb get pods -l app.kubernetes.io/component=mongodb
+kubectl -n mongodb logs -l app.kubernetes.io/component=mongodb
+kubectl -n mongodb describe pod -l app.kubernetes.io/component=mongodb
