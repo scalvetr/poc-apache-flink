@@ -2,6 +2,7 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Connector
 metadata:
   name: {{ include "policy-kafka-connect.fullname" . }}-mongodb-connector
+  namespace: {{ .Values.kafka_connect.namespace }}
 spec:
   name: {{ include "policy-kafka-connect.fullname" . }}-mongodb-connector
   taskMax: 1
@@ -20,7 +21,10 @@ spec:
     publish.full.document.only: "true"
     topic.namespace.map: "{\"{{ .Values.mongodb.database }}.{{ .Values.mongodb.collection }}\":\"{{ .Values.output.topic }}\"}"
     output.format.value: "schema"
-    output.schema.value: "{\"namespace\": \"com.github.scalvetr.poc.flink.policy.model\",\"name\": \"Policy\",\"type\": \"record\",\"fields\": [{\"name\": \"policyId\",\"type\": \"string\"},{\"name\": \"customerId\",\"type\": \"string\"},{\"name\": \"title\",\"type\": \"string\"},{\"name\": \"creationTimestamp\",\"type\": \"long\",\"logicalType\": \"timestamp-millis\"}]}"
+    output.schema.value: '{"namespace": "com.github.scalvetr.poc.flink.policy.model","name":
+        "Policy","type": "record","fields": [{"name": "policyId","type": "string"},{"name":
+        "customerId","type": "string"},{"name": "title","type": "string"},{"name":
+        "creationTimestamp","type": "long","logicalType": "timestamp-millis"}]}'
     #output.schema.value: "{{ .Values.output.schema }}"
     value.converter.schema.registry.url: "{{ .Values.kafka.schema_registry_url}}"
     value.converter.schema.registry.basic.auth.user.info: "csp:xxx"
