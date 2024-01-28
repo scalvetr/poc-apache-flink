@@ -20,17 +20,17 @@ kafka_connect:
   group_id: connect-cg.dev.lab.catalog
   offset_storage:
     create: true
-    topic_name: dev.lab.connect-offsets
-    replication_factor: 3
+    topic_name: connect-offsets
+    replication_factor: 1
     partitions: 5
   config_storage:
     create: true
-    topic_name: dev.lab.connect-configs
-    replication_factor: 3
+    topic_name: connect-configs
+    replication_factor: 1
   status_storage:
     create: true
-    topic_name: dev.lab.connect-status
-    replication_factor: 3
+    topic_name: connect-status
+    replication_factor: 1
     partitions: 5
   plugins:
     locationType: confluentHub
@@ -84,4 +84,4 @@ mongodb:
   authDatabase: admin
   username: user
   password: password
-  collection: claims
+  collection: policies
