@@ -18,4 +18,6 @@ kubectl -n confluent logs -l app=schemaregistry --follow
 
 # see installed subjects list in schemaregistry
 kubectl -n confluent exec schemaregistry-0 -- curl -vvv http://schemaregistry.confluent:8081/subjects | jq
+
+kubectl -n confluent describe connector policy-kafka-connect-mongodb-connector
 ```
