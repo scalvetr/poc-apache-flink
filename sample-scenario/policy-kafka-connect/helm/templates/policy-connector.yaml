@@ -15,7 +15,7 @@ spec:
     transforms.valueToKey.fields: "code"
     transforms.extractKey.type: "org.apache.kafka.connect.transforms.ExtractField$Key"
     transforms.extractKey.field: "code"
-    connection.uri: "mongodb://{{ .Values.mongodb.username }}:{{ .Values.mongodb.password }}@{{ .Values.mongodb.host }}:{{ .Values.mongodb.port }}?authSource={{ .Values.mongodb.authDatabase }}"
+    connection.uri: "mongodb://{{ .Values.mongodb.username }}:{{ .Values.mongodb.password }}@{{ .Values.mongodb.host }}:{{ .Values.mongodb.port }}/?authSource={{ .Values.mongodb.authDatabase }}"
     database: "{{ .Values.mongodb.database }}"
     collection: "{{ .Values.mongodb.collection }}"
     publish.full.document.only: "true"
