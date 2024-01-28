@@ -59,4 +59,4 @@ mongodb:
   authDatabase: admin
   username: user
   password: password
-  collection: claims
+  collection: policies
