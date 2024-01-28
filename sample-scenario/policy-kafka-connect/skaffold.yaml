@@ -17,7 +17,7 @@ deploy:
       setValues:
         kafka.bootstrap_servers: kafka.confluent.svc.cluster.local:9092
         kafka.schema_registry_url: http://schemaregistry.confluent.svc.cluster.local:8081
-        mongodb.host: mongodb.mongodb.svc.cluster.local
+        mongodb.host: mongodb-0.mongodb-headless.mongodb.svc.cluster.local
         mongodb.port: 27017
         mongodb.authDatabase: policiesdb
         mongodb.database: policiesdb

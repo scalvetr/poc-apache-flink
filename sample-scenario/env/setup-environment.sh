@@ -8,6 +8,11 @@
 # https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
 helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb \
 --namespace mongodb --create-namespace \
+--set architecture=replicaset \
+--set replicaSetName=rs0 \
+--set replicaCount=1 \
+--set replicaSetHostnames=false \
+--set auth.replicaSetKey=sample \
 --set auth.rootUser=root \
 --set auth.rootPassword=password \
 --set auth.usernames="{user,user}" \
@@ -17,6 +22,11 @@ helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb \
 echo "mongodb created"
 
 kubectl apply -f env/mongo-express.yaml
+
+# delete
+# helm uninstall mongodb --namespace mongodb
+# kubectl delete -f env/mongo-express.yaml
+
 
 kubectl -n mongodb logs -l app=mongodb-express
 kubectl -n mongodb get pods -l app=mongodb-express

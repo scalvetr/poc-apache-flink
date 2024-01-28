@@ -22,13 +22,13 @@ deploy:
         image.tag: "{{.IMAGE_TAG_sample_scenario_datagen}}@{{.IMAGE_DIGEST_sample_scenario_datagen}}"
       setValues:
         image.pullPolicy: "IfNotPresent"
-        mongodb.claims.host: mongodb.mongodb.svc.cluster.local
+        mongodb.claims.host: mongodb-0.mongodb-headless.mongodb.svc.cluster.local
         mongodb.claims.port: 27017
         mongodb.claims.database: claimsdb
         mongodb.claims.authenticationDatabase: claimsdb
         mongodb.claims.username: user
         mongodb.claims.password: password
-        mongodb.policies.host: mongodb.mongodb.svc.cluster.local
+        mongodb.policies.host: mongodb-0.mongodb-headless.mongodb.svc.cluster.local
         mongodb.policies.port: 27017
         mongodb.policies.database: policiesdb
         mongodb.policies.authenticationDatabase: policiesdb
