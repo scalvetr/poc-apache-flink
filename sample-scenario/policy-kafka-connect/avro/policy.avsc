@@ -17,8 +17,10 @@
     },
     {
       "name": "creationTimestamp",
-      "type": "long",
-      "logicalType": "timestamp-millis"
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
     }
   ]
 }

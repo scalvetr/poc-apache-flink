@@ -24,7 +24,7 @@ spec:
     output.schema.value: '{"namespace": "com.github.scalvetr.poc.flink.policy.model","name":
         "Policy","type": "record","fields": [{"name": "policyId","type": "string"},{"name":
         "customerId","type": "string"},{"name": "title","type": "string"},{"name":
-        "creationTimestamp","type": "long","logicalType": "timestamp-millis"}]}'
+        "creationTimestamp","type": {"type": "long", "logicalType": "timestamp-millis"}}]}'
     #output.schema.value: "{{ .Values.output.schema }}"
     value.converter.schema.registry.url: "{{ .Values.kafka.schema_registry_url}}"
     value.converter.schema.registry.basic.auth.user.info: "csp:xxx"
@@ -33,7 +33,6 @@ spec:
     value.converter.schemas.enable: "true"
     startup.mode: "copy_existing"
     #errors.tolerance: all
-
   restartPolicy:
     type: OnFailure
     maxRetry: 10
