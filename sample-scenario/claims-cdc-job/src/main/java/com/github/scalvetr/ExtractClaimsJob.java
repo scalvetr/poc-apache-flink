@@ -24,7 +24,6 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.typeutils.TupleTypeInfo;
 import org.apache.flink.configuration.MemorySize;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.mongodb.source.MongoSource;
@@ -38,8 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.file.Files;
+import java.time.Instant;
 import java.util.Properties;
 
 /**
@@ -91,7 +90,7 @@ public class ExtractClaimsJob {
                                 .setClaimId(document.get("claimId").toString())
                                 .setCustomerId(document.get("customer_id").toString())
                                 .setPolicyId(document.get("policyId").toString())
-                                .setCreationTimestamp(document.get("creationTimestamp").asDouble().longValue()).build();
+                                .setCreationTimestamp(Instant.ofEpochMilli(document.get("creationTimestamp").asDateTime().getValue())).build();
                     }
 
                     @Override
