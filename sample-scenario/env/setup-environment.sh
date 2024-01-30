@@ -1,9 +1,14 @@
 #!/bin/bash
 
+echo "running 01-install_k8s.sh"
 . ../scripts/01-install_k8s.sh
+echo "running 01-install_kafka.sh"
 . ../scripts/02-install_kafka.sh
+echo "running 01-install_flink.sh"
 . ../scripts/03-install_flink.sh
 
+
+echo "installing bitnamicharts/mongodb"
 # mongodb-claimsdb
 # https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
 helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb \
@@ -21,8 +26,10 @@ helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb \
 
 echo "mongodb created"
 
+echo "installing mongo-express"
 kubectl apply -f env/mongo-express.yaml
 
+echo "mongo-express installed"
 # delete
 # helm uninstall mongodb --namespace mongodb
 # kubectl delete -f env/mongo-express.yaml
