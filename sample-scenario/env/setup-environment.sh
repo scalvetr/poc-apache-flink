@@ -11,7 +11,7 @@ echo "running 01-install_flink.sh"
 echo "installing bitnamicharts/mongodb"
 # mongodb-claimsdb
 # https://github.com/bitnami/charts/blob/main/bitnami/mongodb/values.yaml
-helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb \
+helm install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb --version 14.7.0 \
 --namespace mongodb --create-namespace \
 --set architecture=replicaset \
 --set replicaSetName=rs0 \
