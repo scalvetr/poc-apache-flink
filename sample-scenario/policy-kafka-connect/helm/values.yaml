@@ -16,19 +16,17 @@ schema_registry:
     secret: cloud-sr-access
 
 kafka_connect:
+  create: true
   namespace: confluent
   group_id: connect-cg.dev.lab.catalog
   offset_storage:
-    create: true
     topic_name: connect-offsets
     replication_factor: 1
     partitions: 5
   config_storage:
-    create: true
     topic_name: connect-configs
     replication_factor: 1
   status_storage:
-    create: true
     topic_name: connect-status
     replication_factor: 1
     partitions: 5

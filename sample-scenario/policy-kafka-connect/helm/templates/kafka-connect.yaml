@@ -1,3 +1,4 @@
+{{- if .Values.kafka_connect.create -}}
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
@@ -45,3 +46,4 @@ spec:
         basic:
           secretRef: {{ .Values.schema_registry.authentication.secret }}
       {{- end }}
+{{- end }}
