@@ -6,21 +6,32 @@ Sample scenario has the objective to test the different flink apis.
 
 ## Prerequisites
 
-* Install KinD: [00_SETUP_LOCAL_K8S.md](../doc/00_SETUP_LOCAL_K8S.md)
-* Deploy Kafka: [01_DEPLOY_KAFKA.md](../doc/01_DEPLOY_KAFKA.md)
-* Install Flink: [02_INSTALL_FLINK.md](../doc/02_INSTALL_FLINK.md)
-
-Install skaffold
+- docker
+- kind
+- make
+- helm
+- skaffold
 
 ```shell
-brew install skaffold
-# v2.9.0
+brew install kind # v0.20.0
+brew install make 
+brew install helm # v3.13.2
+brew install skaffold # v2.9.0
 ```
 
 Create initial environment
-
 ```shell
-env/setup-environment.sh
+make setup
+
+# test
+kubectl -n mongodb logs -l app=mongodb-express
+kubectl -n mongodb get pods -l app=mongodb-express
+
+# see logs
+# kubectl logs -f -l app=mongo -n mongodb
+kubectl -n mongodb get pods -l app.kubernetes.io/component=mongodb
+kubectl -n mongodb logs -l app.kubernetes.io/component=mongodb
+kubectl -n mongodb describe pod -l app.kubernetes.io/component=mongodb
 
 # validate environment
 
