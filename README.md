@@ -8,9 +8,14 @@ and then deploy some simple jobs, developed in java.
 
 ## Prerequisites
 
-* [Install local Kubernetes](doc/00_SETUP_LOCAL_K8S.md)
-* [Deploy Kafka](doc/01_DEPLOY_KAFKA.md)
-* [Install Flink](doc/02_INSTALL_FLINK.md)
+* Install local Kubernetes
+* Deploy Kafka
+* Install Flink
+* Install Minio
+
+```shell
+make setup
+```
 
 ## Simple Examples
 

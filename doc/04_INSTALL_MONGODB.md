@@ -2,86 +2,53 @@
 
 See: https://github.com/mongodb/mongodb-kubernetes-operator/blob/master/docs/install-upgrade.md#install-the-operator-using-Helm
 
+See installation scrip: [05-install-mongodb.sh](../scripts/05-install-mongodb.sh)
 
-Install operator
 ```shell
-helm repo add mongodb https://mongodb.github.io/helm-charts
-
-helm install \
---namespace mongodb \
---create-namespace \
-mongodb-operator mongodb/community-operator
-
+make install-mongodb
 ```
 
-Deploy a database
+
+Check logs
 ```shell
-cat <<EOF | kubectl apply -f -
-apiVersion: mongodbcommunity.mongodb.com/v1
-kind: MongoDBCommunity
-metadata:
-  name: mongodb
-  namespace: mongodb
-spec:
-  members: 1
-  type: ReplicaSet
-  version: "6.0.5"
-  security:
-    authentication:
-      modes: ["SCRAM"]
-  users:
-    - name: user
-      db: admin
-      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
-        name: user-password
-      roles:
-        - name: clusterAdmin
-          db: admin
-        - name: userAdminAnyDatabase
-          db: admin
-        - name: dbAdminAnyDatabase
-          db: admin
-      scramCredentialsSecretName: scram
-  additionalMongodConfig:
-    storage.wiredTiger.engineConfig.journalCompressor: zlib
+# Mongo express
+kubectl -n mongodb logs -l app=mongodb-express
+kubectl -n mongodb get pods -l app=mongodb-express
 
-# the user credentials will be generated from this secret
-# once the credentials are generated, this secret is no longer required
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: user-password
-  namespace: mongodb
-type: Opaque
-stringData:
-  password: password
-EOF
-
-kubectl -n mongodb get events
-
-kubectl wait --namespace mongodb \
-  --for=condition=ready pod \
-  --selector=app=mongodb-svc \
-  --timeout=180s
-
-kubectl -n mongodb delete secret user-password
-  
-kubectl -n mongodb apply -f doc/mongo-express.yaml
-kubectl -n mongodb logs deployment/mongodb-express
-
-echo "Go to: http://express.mongodb.localtest.me/"
-# user:password
+# Mongodb
+kubectl -n mongodb get pods -l app.kubernetes.io/component=mongodb
+kubectl -n mongodb logs -l app.kubernetes.io/component=mongodb
+kubectl -n mongodb describe pod -l app.kubernetes.io/component=mongodb
 ```
 
-Test
+Check logs
 ```shell
+# validate environment
+kubectl run --namespace mongodb mongodb-client --rm --tty -i --restart='Never' \
+--image busybox --command -- \
+ping mongodb-arbiter-0.mongodb-arbiter-headless.mongodb.svc.cluster.local
 
+kubectl run --namespace mongodb mongodb-client --rm --tty -i --restart='Never' \
+--image busybox --command -- \
+ping mongodb-0.mongodb-headless.mongodb.svc.cluster.local
 
-```
+# mongo db
+export MONGODB_ROOT_USER="root";
+export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace mongodb mongodb -o jsonpath="{.data.mongodb-root-password}" | base64 -d)
+export MONGODB_PASSWORD=$(kubectl get secret --namespace mongodb mongodb -o jsonpath="{.data.mongodb-passwords}" | base64 -d | awk -F',' '{print $1}')
 
-Uninstall
-```shell
-helm uninstall mongodb-operator --namespace mongodb
-kubectl delete namespace mongodb
+echo "MONGODB_ROOT_USER=${MONGODB_ROOT_USER}"
+echo "MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}"
+echo "MONGODB_PASSWORD=${MONGODB_PASSWORD}"
+
+kubectl run --namespace mongodb mongodb-client --rm --tty -i --restart='Never' \
+--env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" \
+--image docker.io/bitnami/mongodb:7.0.5-debian-11-r6 \
+--command -- \
+mongosh admin --host "mongodb-0.mongodb-headless.mongodb.svc.cluster.local:27017" \
+--authenticationDatabase admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD
+
+> show databases
+
+kubectl -n mongodb logs -l app=mongodb-express
 ```
